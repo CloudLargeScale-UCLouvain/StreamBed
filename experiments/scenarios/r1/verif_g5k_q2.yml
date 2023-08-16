@@ -1,0 +1,22 @@
+results_estimation: "variable-results/r1/q2-final-20230422074701"
+xp_name: "q2"
+g5k: True
+filter_data: "(observed_source_rate > 3000000)&(used_task_slots>=5)" # remove bad runs (min should be 3.7 millions)
+
+job_managers_qty: 1
+kafka_qty: 0
+kafka_partitions: 32
+kafka_replicas: 8
+kafka_node_selector: kafka
+reset_kafka_data: False
+
+task_managers_qty: 8
+source_parallelism: 64
+
+datagen_configuration: null
+
+notebook: "/xp_intro_q2_datagen"
+warmup: 120
+timeout: 600
+sensitivity: 0.01
+ratio: 1

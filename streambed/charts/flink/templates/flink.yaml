@@ -1,0 +1,173 @@
+apiVersion: flinkoperator.k8s.io/v1beta1
+kind: FlinkCluster
+metadata:
+  name: {{ include "flink.fullname" . }}
+spec:
+  flinkVersion: 1.14.2
+  image:
+    name: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+  jobManager:
+    accessScope: {{ .Values.service.type }}
+    ports:
+      ui: {{ .Values.service.port }}
+    resources:
+      limits:
+        memory: "{{ .Values.jobManager.resources.limits.memory }}"
+        cpu: "{{ .Values.jobManager.resources.limits.cpu }}"
+    extraPorts:
+      - name: prom
+        containerPort: 9249
+    nodeSelector:
+      tier: jobmanager
+  taskManager:
+    volumeClaimTemplates:
+      - metadata:
+          name: tmp
+        spec:
+          accessModes: [ "ReadWriteOnce" ]        
+          storageClassName: local-path
+          resources:
+            requests:
+              storage: 1Gi          
+    volumeMounts:
+      - mountPath: /tmp
+        name: tmp  
+    replicas: {{ .Values.taskManager.replicas }}
+    resources:
+      limits:
+        memory: "{{ .Values.taskManager.resources.limits.memory }}"
+        cpu: "{{ .Values.taskManager.resources.limits.cpu }}"
+    extraPorts:
+      - name: prom
+        containerPort: 9249
+    nodeSelector:
+      tier: "{{ .Values.taskManager.tier }}"
+    readinessProbe:
+      timeoutSeconds: 3600
+
+  flinkProperties:
+    taskmanager.numberOfTaskSlots: "{{ .Values.flinkProperties.taskmanager.numberOfTaskSlots }}"
+    jobmanager.heap.size: "" # set empty value (only for Flink version 1.11 or above)
+    jobmanager.memory.process.size: "{{ .Values.flinkProperties.jobmanager.memory.process.size }}" # job manager memory limit  (only for Flink version 1.11 or above)
+    taskmanager.heap.size: "" # set empty value
+    {{- if .Values.flinkProperties.taskmanager.memory.custom }}
+    taskmanager.memory.framework.heap.size: "{{ .Values.flinkProperties.taskmanager.memory.custom.framework_heap }}"
+    taskmanager.memory.task.heap.size: "{{ .Values.flinkProperties.taskmanager.memory.custom.heap }}"
+    taskmanager.memory.managed.size: "{{ .Values.flinkProperties.taskmanager.memory.custom.managed }}"
+    taskmanager.memory.framework.off-heap.size: "{{ .Values.flinkProperties.taskmanager.memory.custom.framework_off_heap }}"
+    taskmanager.memory.task.off-heap.size: "{{ .Values.flinkProperties.taskmanager.memory.custom.task_off_heap }}"
+    taskmanager.memory.network.min: "{{ .Values.flinkProperties.taskmanager.memory.custom.network }}"
+    taskmanager.memory.network.max: "{{ .Values.flinkProperties.taskmanager.memory.custom.network }}"
+    taskmanager.memory.jvm-metaspace.size: "{{ .Values.flinkProperties.taskmanager.memory.custom.metaspace }}"
+    taskmanager.memory.jvm-overhead.min: "{{ .Values.flinkProperties.taskmanager.memory.custom.overhead }}"
+    taskmanager.memory.jvm-overhead.max: "{{ .Values.flinkProperties.taskmanager.memory.custom.overhead }}"
+    taskmanager.memory.process.size: "{{ .Values.flinkProperties.taskmanager.memory.process.size }}"
+    {{- else}}
+    taskmanager.memory.process.size: "{{ .Values.flinkProperties.taskmanager.memory.process.size }}" # task manager memory limit
+    taskmanager.memory.network.fraction: "0.2"
+    {{- end }}
+    state.backend.latency-track.keyed-state-enabled: "true"
+    rest.flamegraph.enabled: "true"
+
+    #classloader.resolve-order: parent-first    
+    metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+    s3.endpoint: "http://minio.manager:9000"
+    s3.path.style.access: "true"
+    s3.access-key: "root"
+    s3.secret-key: "rootroot"
+    
+    #nexmark specific parameters
+    io.tmp.dirs: "/tmp"
+    env.java.opts: "-verbose:gc -XX:NewRatio=3 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:ParallelGCThreads=4"
+    env.java.opts.jobmanager: "-Xloggc:$FLINK_LOG_DIR/jobmanager-gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=512M"
+    env.java.opts.taskmanager: "-Xloggc:$FLINK_LOG_DIR/taskmanager-gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=512M"
+    slotmanager.taskmanager-timeout: "600000"
+    # Restart strategy related configuration
+    restart-strategy: "fixed-delay"
+    restart-strategy.fixed-delay.attempts: "2147483647"
+    restart-strategy.fixed-delay.delay: "10 s"
+
+    # Max task attempts to retain in JM
+    jobmanager.execution.attempts-history-size: "100"
+
+    state.backend: "rocksdb"
+    state.checkpoints.dir: "file:///tmp/checkpoints"
+    state.backend.rocksdb.localdir: "/tmp"
+    state.backend.incremental: "true"
+    execution.checkpointing.interval: "180000"
+    execution.checkpointing.mode: "EXACTLY_ONCE"
+    state.backend.local-recovery: "true"
+    #==============================================================================
+    # Network
+    #==============================================================================
+
+    # Number of extra network buffers to use for each outgoing/incoming gate
+    # (result partition/input gate).
+    taskmanager.network.memory.floating-buffers-per-gate: "256"
+
+    # The number of buffers available for each external blocking channel.
+    # Will change it to be the default value later.
+    taskmanager.network.memory.buffers-per-external-blocking-channel: "16"
+
+    # The maximum number of concurrent requests in the reduce-side tasks.
+    # Will change it to be the default value later.
+    task.external.shuffle.max-concurrent-requests: "512"
+
+    # Whether to enable compress shuffle data when using external shuffle.
+    # Will change it to be the default value later.
+    task.external.shuffle.compression.enable: "true"
+
+    # Maximum backoff time (ms) for partition requests of input channels.
+    taskmanager.network.request-backoff.max: "300000"
+    cluster.evenly-spread-out-slots: "{{ .Values.flinkProperties.evenlySpreadOutSlots }}"
+    #heartbeat.timeout: "600000"
+    #web.timeout: "600000"
+  logConfig:
+    "log4j-console.properties": |
+      rootLogger.level = INFO
+      rootLogger.appenderRef.file.ref = LogFile
+      rootLogger.appenderRef.console.ref = LogConsole
+      appender.file.name = LogFile
+      appender.file.type = File
+      appender.file.append = false
+      appender.file.fileName = ${sys:log.file}
+      appender.file.layout.type = PatternLayout
+      appender.file.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+      appender.console.name = LogConsole
+      appender.console.type = CONSOLE
+      appender.console.layout.type = PatternLayout
+      appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+      logger.akka.name = akka
+      logger.akka.level = INFO
+      logger.kafka.name= org.apache.kafka
+      logger.kafka.level = INFO
+      logger.hadoop.name = org.apache.hadoop
+      logger.hadoop.level = INFO
+      logger.zookeeper.name = org.apache.zookeeper
+      logger.zookeeper.level = INFO
+      logger.netty.name = org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline
+      logger.netty.level = OFF
+    "logback-console.xml": |
+      <configuration>
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+          <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{60} %X{sourceThread} - %msg%n</pattern>
+          </encoder>
+        </appender>
+        <appender name="file" class="ch.qos.logback.core.FileAppender">
+          <file>${log.file}</file>
+          <append>false</append>
+          <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{60} %X{sourceThread} - %msg%n</pattern>
+          </encoder>
+        </appender>
+        <root level="INFO">
+          <appender-ref ref="console"/>
+          <appender-ref ref="file"/>
+        </root>
+        <logger name="akka" level="INFO" />
+        <logger name="org.apache.kafka" level="INFO" />
+        <logger name="org.apache.hadoop" level="INFO" />
+        <logger name="org.apache.zookeeper" level="INFO" />
+        <logger name="org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline" level="ERROR" />
+      </configuration>

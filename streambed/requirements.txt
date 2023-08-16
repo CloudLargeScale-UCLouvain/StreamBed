@@ -1,0 +1,10 @@
+PuLP==2.7.0
+adaptive==0.15.1
+pandas==1.2.2
+papermill==2.4.0
+prometheus-api-client==0.5.1
+kubernetes==23.3.0
+scikit-learn==1.0.2
+scikit-optimize==0.9.0
+coloredlogs==15.0.1
+prometheus-pandas==0.3.2

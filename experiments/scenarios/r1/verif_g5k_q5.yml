@@ -1,0 +1,30 @@
+results_estimation: "variable-results/r1_/q5-final-20230517022309"
+xp_name: "q5"
+g5k: True
+filter_data: ""
+
+job_managers_qty: 1
+kafka_qty: 8
+kafka_partitions: 32
+kafka_replicas: 8
+kafka_node_selector: kafka
+reset_kafka_data: False
+
+task_managers_qty: 8
+source_parallelism: 32
+
+datagen_configuration:
+  parallelism: 64
+  cpu: 16
+  memory : 32768
+  task_managers_qty: 8
+  task_slots: 16
+  timeout: 600
+  notebook: "/xp_datagen"
+  node_selector: "kafka"
+
+notebook: "/xp_intro_q5_kafka"
+warmup: 120
+timeout: 1800
+sensitivity: 0.01
+ratio: 0.9

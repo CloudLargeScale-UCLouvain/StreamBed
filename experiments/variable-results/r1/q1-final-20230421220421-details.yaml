@@ -1,0 +1,3317 @@
+- configuration: &id002
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: &id003
+      cooldown_throughput: 200
+      higher_bound_ratio: 2
+      initial_rate: 100000000
+      mean_threshold: 0.01
+      observation_size: 30
+      size_window: 60
+      slide_window: 75
+      timeout: 600
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 05dd1a6e1d94a683d5a0db6571edb2bc
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - &id001 !!python/object/apply:numpy.dtype
+      args:
+      - f8
+      - false
+      - true
+      state: !!python/tuple
+      - 3
+      - <
+      - null
+      - null
+      - null
+      - -1
+      - -1
+      - 0
+    - !!binary |
+      FHCOEKdw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AGw9Vp2WOEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      B/9VTcr+2UA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      lzqTPJO7WEE=
+  task_parallelism: ''
+- configuration: *id002
+  job_id: 26af6af489b2dfb907de2a1eb393715d
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      u+9ZcIFw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LxhQ2cH4NkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bg5T3wKN+UA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ThepBpREXkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id002
+  job_id: 41930728ea958447b926ee426131f9dd
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YdX41Zxw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rhIu9fjHNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      hn8R2MeeG0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nysgnia2WUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: &id004
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: d64acbe028a320d435e4787174c5b91a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +cFKJWVw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      eHu3dwRrNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      SgD1mEz4DUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      3j/mVOm7WkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id004
+  job_id: 0a42ea406b29e4131fc1a3a5d8b0f55e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      m7sjE01w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gTkxXa+zNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ylzLm1D7DEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HdnLhjJFWUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id004
+  job_id: 36c5a4f43b0cd1ff87897a87299dc638
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vjAE9Ztw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      w2IGrbuxNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      TEj2A1mmAUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      n0izVYhkW0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: &id005
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 75
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 85b603d386a4eed16b4799e7c6021178
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tNR/PrZw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bcYtxr8ZJkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      t23btkV1w0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      2FBeI+7CSUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id005
+  job_id: 29ece8d0b535f80d6c0c503c8317236e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QWa7nYxw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Tk3lVzZSNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8XJKjv/SEEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ARAt2jalVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id005
+  job_id: 4d77bf4535239c20e830b3f003f4a920
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RnIPr8Fw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DkEi/HExNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7tX9AUMyCEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      u+yyeyVjVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: &id006
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 80
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 6031485b3804f99de9f07f6d30debee1
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LrgoLnlw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      S+z5LZ5yNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      TI12qQ4WGUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      iRCKKJnnV0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id006
+  job_id: a0289ed0a0150082b9da02da2140f072
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Q+VzVI1w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      T+fXyFq0MkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xR7Z7VUyEUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nG2zbRmqVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id006
+  job_id: d7383686dcd3a052ad9a5e009101a7e5
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /syKhLVx7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      3Bx1qMAwM0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +6rHwbMtFEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      O8oTIbWbU0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: &id007
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 79bb77ac40da615a6fb3a014de4672a2
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nNTyT4tw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      q86eOfVDOEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UsMHjGSN6UA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KtwxQLR2V0E=
+  task_parallelism: ''
+- configuration: *id007
+  job_id: a2c985c6483857ee2f2217088df955a2
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gmrLa65w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      V+D5fMiPN0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      pX0HPm++9UA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nJHH1flvXUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id007
+  job_id: 746f986257e2ccd245e2521ea1e2c81e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JDxArs9w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vUnQ3Ed4N0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      myyxS3Y38kA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bLC9SAJcXEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: &id008
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: f4e8a84157de5b19503fcbf55a9ee4e0
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ay5o3qBw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rKi2ZMFJNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      6RLWenI6AEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Zp+MWkhFW0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id008
+  job_id: 5664239303aeada35b65919a0e6d0557
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      z5hzfZlw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Dcft8cymNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      OSVFxUwJBUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /KYe6OEjXkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id008
+  job_id: 199bdb36444e3b78603fef4b543d753a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Ee4B/L9w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      wRFfJo1+NkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /IB8kLrXEkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QvkBqCE6XEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: &id009
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 75
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 806b922e6e8a777d9b8586b35b6285ae
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      sGMWWZJw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ElDrc4gzNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9N47w3EqDkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      w2pVB2oBXUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id009
+  job_id: 677cb3f23c80acdc0243487fb56d622c
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Q6JOMVtw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5zCC6ADqNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      IW0kMXIAEkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gVq/kn9MWUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id009
+  job_id: 9081222eab4581602e4b0d88afd5128a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kwQ//VBw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jpCW0H9UJUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JkmSJAd7w0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cpDaZr4pR0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: &id010
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 80
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 70c0612e7243a130b514410e0c715b25
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7mkTaclw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AEPWBFakNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      WITpzpTtFEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      x9qhyJ2ZWUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id010
+  job_id: 8e1e52cd5bff3b35ce8c713741da082f
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      00+mqJFw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1mu91sv+I0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      X/EVX+9+w0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      J4sOSEBDREE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id010
+  job_id: b3f2028669d9173932581dd0866baf45
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HYpoqNxw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Ack2RaiSM0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      r14b0z7wFEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      t1Wl4HSxVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: &id011
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 269e438f4ba1f878f6aad5be0d37d9fc
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      F53//Y5w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      f3XDQljfN0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +ubO8LnYFEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gw8++HlLWUE=
+  task_parallelism: ''
+- configuration: *id011
+  job_id: bedd438650c19eb9b76869d1668c328a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tsAybvNw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4n3ZxiCTN0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9aRHocRI90A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      0z8hEE2IXEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id011
+  job_id: 7a711562ae4bdcf3a216712c87d85bb1
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gUkLyq9w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bJ32/950N0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KhRtcvmWG0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /tHZqd/SXEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: &id012
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 7cdcdf56acdb6b1bf3a5c7414d2837d1
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LmXEpLxw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JsuLIHrUNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      E71VwE8TCUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8CMblzr2W0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id012
+  job_id: e349c33731172258eb0885c51065f8d8
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      p5+Un9xw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VMQJh9qJNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      m56gxiiO/0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YCZAv1s7XEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id012
+  job_id: 611035e8dcf3d29baa54c3e088b4366d
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      urzaAnpw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /CsmBJKPNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RMJ8u/j9/UA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      wHR3XQq2VkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: &id013
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 75
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: f649d2749c2d772369a5abd69e77e08d
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NAkA/6Rw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9RmLeeo1NkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      p0veqpqsDkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Z8KfCafnXUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id013
+  job_id: 839d322545777737674d487e82d1081a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      dRdEXN9w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QpPQYHVzNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      t2ylpTyGEEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KL2JTx7nWkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id013
+  job_id: 8dff1d68c9db8295b9519671041810f4
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      esUhUBhx7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qxmBkK+NNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9GbBLFqDDUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      L3DJvLqsWUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);9|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: &id014
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 80
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 7a8593296f6e20b2e753062977bf85e2
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ppNTsFJw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JyyUDEtDNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Hi/Ep4jgGEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +fn7x2UoWkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id014
+  job_id: 05cbfe6e1746c6c42591f6f4f47fa178
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tkb6A+Jw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ZzOXrUoJNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      WvisVBv0EEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      2y10BA+gVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id014
+  job_id: af73b2818d2442544516f97797246a75
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      iO2OhBhx7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      BDaQz/yaM0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      li/HMO5EEkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nhr2mDCwVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);13|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: &id015
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 1aab5c85bb57d3b556f69efd659ee4aa
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7pmD+7hw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      aIluoA44OkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      WHzFVy/82EA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      btjFIkiNV0E=
+  task_parallelism: ''
+- configuration: *id015
+  job_id: 5412108cc685e3316a397791f37510cb
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YuZKJINw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GTCNAauDMEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      fcVXfJ12w0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      T296E8MHUUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: *id015
+  job_id: 352865a69c2453034d4d73aed8a76b1a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      SertelZw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qyLLmJKaOEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      n22cIwSrBkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NewaeanHXEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);1'
+- configuration: &id016
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 322c7d1c26b5857bb94597d0c0b0c8c8
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KsbPz8Zw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      a2U7wRPLN0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AUXg/9LGD0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cCW351raXUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id016
+  job_id: e2c2aafcde1e9c2811d29603c78f1a4c
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RNyEEL5w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DckuN4KhOEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1I8NwZACE0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rHrJ++ZsXkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: *id016
+  job_id: 8e7ab2b4d2cf84e913e02c7853abc190
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DsSSaKdw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      TBQ0hG3jN0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      L273IHGvBkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      IOL34ayhX0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);2'
+- configuration: &id017
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 75
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: ed39e297ca85cc7c4abed60ccb068580
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 8
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vNElI8Nw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UAZwxH7vN0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      oKGWeQoOFkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1NkkLV86WUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);8|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id017
+  job_id: 204416073ff6edaef0729b1402d20080
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 8
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      lWOD48Vw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JSUycfa6NkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4zIxtSh5EkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      X96WVE0nVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);8|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: *id017
+  job_id: af16e1d3be18139bc40f3bb2736c8a5a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 8
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rJUEpYJv7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VyV/jxymNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Y7y9IjFvDEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NuO1UCdxVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);8|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);3'
+- configuration: &id018
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q1_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 80
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: fff0ecdfbe7d5dbe1fbc2d2d82ad18fc
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 12
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      FyUdPmxw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      3PdIpmHSNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jpjGsptUFUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uBMF2qm2WUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);12|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);4'
+- configuration: *id018
+  job_id: 5e07bb3f60eefe5c6657e9c740442454
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 12
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      B6QhEepw7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Z6P327jVNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JOUsOKE3FEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5elfRXFjVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);12|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);4'
+- configuration: *id018
+  job_id: dee5521799296b60ddba5dd8de3646e2
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+      3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+      (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+      extra], where=[(event_type = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 12
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, bidder, price, dateTime, extra])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kCW4aZ1w7T8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      zsRGITozNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Tar3/FKjFEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Helok5ghVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.bidder AS bidder, CAST((0.908:DECIMAL(4,
+    3) * bid.price)) AS price, CAST(Reinterpret(CASE((event_type = 0), person.dateTime,
+    (event_type = 1), auction.dateTime, bid.dateTime))) AS dateTime, bid.extra AS
+    extra], where=[(event_type = 2)]);12|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, bidder, price, dateTime, extra]);4'

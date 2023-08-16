@@ -1,0 +1,398 @@
+﻿{
+  "paragraphs": [
+    {
+      "title": "Flink packages configurations",
+      "text": "%flink.conf\n\n# nexmark should have be copied in tmp before with this kind of command: kubectl -n manager cp nexmark-flink-0.2-SNAPSHOT.jar $(kubectl get pods -n manager -l app.kubernetes.io/name=zeppelin-server  -o jsonpath=\"{.items[0].metadata.name}\"):/tmp\n\nflink.execution.mode remote\nflink.execution.remote.host nexmark-flink-jobmanager.default\nflink.execution.remote.port 8081\n\n#table.exec.mini-batch.enabled: true\n#table.exec.mini-batch.allow-latency: 2s\n#table.exec.mini-batch.size: 50000\ntable.optimizer.distinct-agg.split.enabled: true\ntable.optimizer.simplify-operator-name-enabled: false\n\n# You need to run this paragraph first before running any flink code.\n\n#flink.execution.jars /tmp/nexmark-flink-0.2-SNAPSHOT.jar,/opt/flink/lib/flink-json-1.14.2.jar,/opt/flink/lib/flink-sql-connector-kafka_2.12-1.14.2.jar,/tmp/flink-sql-connector-kafka-ratelimit_2.12-1.14.2.jar\n\nflink.execution.jars /tmp/nexmark-flink-0.2-SNAPSHOT.jar,/tmp/flink-sql-connector-kafka-ratelimit_2.12-1.14.2.jar\n# ADD JAR '/tmp/flink-sql-connector-kafka_2.12-1.14.2.jar';\n# ADD JAR '/tmp/flink-sql-connector-kafka-ratelimit_2.12-1.14.2.jar';\n#flink.execution.packages org.apache.flink:flink-connector-kafka_2.12:1.14.2,org.apache.flink:flink-sql-connector-kafka_2.12:1.14.2,org.apache.flink:flink-json:1.14.2\nflink.execution.packages org.apache.flink:flink-avro:1.14.2\n# 'connector' = 'kafka-ratelimit',\n# ,'rate.limit' = '5'",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-15T20:01:59+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1681556895944_139053640",
+      "id": "paragraph_1659835829032_1650567033",
+      "dateCreated": "2023-04-15T11:08:15+0000",
+      "dateStarted": "2023-04-15T20:01:59+0000",
+      "dateFinished": "2023-04-15T20:01:59+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:16263"
+    },
+    {
+      "title": "Kafka table creation",
+      "text": "%flink.ssql(parallelism=1)\nDROP TABLE IF EXISTS kafka;\nCREATE TABLE kafka (\n    event_type int,\n    person ROW<\n        id  BIGINT,\n        name  VARCHAR,\n        emailAddress  VARCHAR,\n        creditCard  VARCHAR,\n        city  VARCHAR,\n        state  VARCHAR,\n        dateTime TIMESTAMP(3),\n        extra  VARCHAR>,\n    auction ROW<\n        id  BIGINT,\n        itemName  VARCHAR,\n        description  VARCHAR,\n        initialBid  BIGINT,\n        reserve  BIGINT,\n        dateTime  TIMESTAMP(3),\n        expires  TIMESTAMP(3),\n        seller  BIGINT,\n        category  BIGINT,\n        extra  VARCHAR>,\n    bid ROW<\n        auction  BIGINT,\n        bidder  BIGINT,\n        price  BIGINT,\n        channel  VARCHAR,\n        url  VARCHAR,\n        dateTime  TIMESTAMP(3),\n        extra  VARCHAR>,\n    dateTime AS\n        CASE\n            WHEN event_type = 0 THEN person.dateTime\n            WHEN event_type = 1 THEN auction.dateTime\n            ELSE bid.dateTime\n        END,\n    processingTime as PROCTIME(),\n    WATERMARK FOR dateTime AS dateTime - INTERVAL '4' SECOND\n) WITH (\n    'connector' = 'kafka-ratelimit',\n    'topic' = '${TOPIC}',\n    'scan.startup.mode' = 'earliest-offset',\n    'properties.bootstrap.servers' = '${BOOTSTRAP_SERVERS}',\n    'properties.group.id' = 'nexmark',\n    'sink.partitioner' = 'fixed',\n    'format' = 'avro'\n    ,'rate.limit' = '${TPS}'\n    );\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-15T20:02:00+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "TPS": "3211119",
+          "EVENTS_NUM": "0",
+          "PERSON_PROPORTION": "1",
+          "AUCTION_PROPORTION": "3",
+          "BID_PROPORTION": "46",
+          "NEXMARK_TABLE": "kafka",
+          "TOPIC": "nexmark;nexmark-control",
+          "BOOTSTRAP_SERVERS": "my-cluster-kafka-bootstrap.kafka:9092"
+        },
+        "forms": {
+          "TOPIC": {
+            "type": "TextBox",
+            "name": "TOPIC",
+            "displayName": "TOPIC",
+            "hidden": false,
+            "$$hashKey": "object:16351"
+          },
+          "BOOTSTRAP_SERVERS": {
+            "type": "TextBox",
+            "name": "BOOTSTRAP_SERVERS",
+            "displayName": "BOOTSTRAP_SERVERS",
+            "hidden": false,
+            "$$hashKey": "object:16352"
+          },
+          "TPS": {
+            "type": "TextBox",
+            "name": "TPS",
+            "displayName": "TPS",
+            "hidden": false,
+            "$$hashKey": "object:16353"
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Table has been dropped.\nTable has been created.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1681556895944_1873611235",
+      "id": "paragraph_1666651615298_1230438717",
+      "dateCreated": "2023-04-15T11:08:15+0000",
+      "dateStarted": "2023-04-15T20:02:00+0000",
+      "dateFinished": "2023-04-15T20:02:08+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:16264"
+    },
+    {
+      "title": "Datagen tables creation",
+      "text": "%flink.ssql(parallelism=1)\nDROP TABLE IF EXISTS datagen;\nCREATE TABLE datagen (\n    event_type int,\n    person ROW<\n        id  BIGINT,\n        name  VARCHAR,\n        emailAddress  VARCHAR,\n        creditCard  VARCHAR,\n        city  VARCHAR,\n        state  VARCHAR,\n        dateTime TIMESTAMP(3),\n        extra  VARCHAR>,\n    auction ROW<\n        id  BIGINT,\n        itemName  VARCHAR,\n        description  VARCHAR,\n        initialBid  BIGINT,\n        reserve  BIGINT,\n        dateTime  TIMESTAMP(3),\n        expires  TIMESTAMP(3),\n        seller  BIGINT,\n        category  BIGINT,\n        extra  VARCHAR>,\n    bid ROW<\n        auction  BIGINT,\n        bidder  BIGINT,\n        price  BIGINT,\n        channel  VARCHAR,\n        url  VARCHAR,\n        dateTime  TIMESTAMP(3),\n        extra  VARCHAR>,\n    dateTime AS\n        CASE\n            WHEN event_type = 0 THEN person.dateTime\n            WHEN event_type = 1 THEN auction.dateTime\n            ELSE bid.dateTime\n        END,\n    WATERMARK FOR dateTime AS dateTime - INTERVAL '4' SECOND\n) WITH (\n    'connector' = 'nexmark',\n    'first-event.rate' = '${TPS}', -- 10000000\n    'next-event.rate' = '${TPS}', -- 10000000\n    'events.num' = '${EVENTS_NUM}', --100000000\n    'person.proportion' = '${PERSON_PROPORTION}', --1\n    'auction.proportion' = '${AUCTION_PROPORTION}', -- 3\n    'bid.proportion' = '${BID_PROPORTION}' -- 46\n);\n\n-- views\nDROP VIEW IF EXISTS person;\nCREATE VIEW person AS\nSELECT\n    person.id,\n    person.name,\n    person.emailAddress,\n    person.creditCard,\n    person.city,\n    person.state,\n    dateTime,\n    person.extra,\n    processingTime\nFROM ${NEXMARK_TABLE} WHERE event_type = 0;\n\nDROP VIEW IF EXISTS auction;\nCREATE VIEW auction AS\nSELECT\n    auction.id,\n    auction.itemName,\n    auction.description,\n    auction.initialBid,\n    auction.reserve,\n    dateTime,\n    auction.expires,\n    auction.seller,\n    auction.category,\n    auction.extra,\n    processingTime \nFROM ${NEXMARK_TABLE} WHERE event_type = 1;\nDROP VIEW IF EXISTS bid;\nCREATE VIEW bid AS\nSELECT\n    bid.auction,\n    bid.bidder,\n    bid.price,\n    bid.channel,\n    bid.url,\n    dateTime,\n    bid.extra,\n    processingTime\nFROM ${NEXMARK_TABLE} WHERE event_type = 2;\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-15T20:02:09+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "TPS": "3211119",
+          "EVENTS_NUM": "0",
+          "PERSON_PROPORTION": "1",
+          "AUCTION_PROPORTION": "3",
+          "BID_PROPORTION": "46",
+          "NEXMARK_TABLE": "kafka",
+          "TOPIC": "nexmark;nexmark-control",
+          "BOOTSTRAP_SERVERS": "my-cluster-kafka-bootstrap.kafka:9092"
+        },
+        "forms": {
+          "TPS": {
+            "type": "TextBox",
+            "name": "TPS",
+            "displayName": "TPS",
+            "hidden": false,
+            "$$hashKey": "object:16401"
+          },
+          "EVENTS_NUM": {
+            "type": "TextBox",
+            "name": "EVENTS_NUM",
+            "displayName": "EVENTS_NUM",
+            "hidden": false,
+            "$$hashKey": "object:16402"
+          },
+          "PERSON_PROPORTION": {
+            "type": "TextBox",
+            "name": "PERSON_PROPORTION",
+            "displayName": "PERSON_PROPORTION",
+            "hidden": false,
+            "$$hashKey": "object:16403"
+          },
+          "AUCTION_PROPORTION": {
+            "type": "TextBox",
+            "name": "AUCTION_PROPORTION",
+            "displayName": "AUCTION_PROPORTION",
+            "hidden": false,
+            "$$hashKey": "object:16404"
+          },
+          "BID_PROPORTION": {
+            "type": "TextBox",
+            "name": "BID_PROPORTION",
+            "displayName": "BID_PROPORTION",
+            "hidden": false,
+            "$$hashKey": "object:16405"
+          },
+          "NEXMARK_TABLE": {
+            "type": "TextBox",
+            "name": "NEXMARK_TABLE",
+            "displayName": "NEXMARK_TABLE",
+            "hidden": false,
+            "$$hashKey": "object:16406"
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Table has been dropped.\nTable has been created.\nView has been dropped.\nView has been created.\nView has been dropped.\nView has been created.\nView has been dropped.\nView has been created.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1681556895944_1704202892",
+      "id": "paragraph_1659835912538_1597650629",
+      "dateCreated": "2023-04-15T11:08:15+0000",
+      "dateStarted": "2023-04-15T20:02:09+0000",
+      "dateFinished": "2023-04-15T20:02:09+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:16265"
+    },
+    {
+      "title": "Preparation query5",
+      "text": "%flink.ssql\n-- sink table (request specific)\nDROP TABLE IF EXISTS discard_sink;\nCREATE TABLE discard_sink (\n  auction  BIGINT,\n  num  BIGINT\n) WITH (\n  'connector' = 'blackhole'\n);\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-15T20:02:10+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Table has been dropped.\nTable has been created.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1681556895944_677161251",
+      "id": "paragraph_1661528712615_153395988",
+      "dateCreated": "2023-04-15T11:08:15+0000",
+      "dateStarted": "2023-04-15T20:02:10+0000",
+      "dateFinished": "2023-04-15T20:02:10+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:16266"
+    },
+    {
+      "title": "Query",
+      "text": "%flink\n\nvar sql = \"\"\"\nINSERT INTO discard_sink\nSELECT AuctionBids.auction, AuctionBids.num\n FROM (\n   SELECT\n     B1.auction,\n     count(*) AS num,\n     HOP_START(B1.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS starttime,\n     HOP_END(B1.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS endtime\n   FROM bid B1\n   GROUP BY\n     B1.auction,\n     HOP(B1.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND)\n ) AS AuctionBids\n JOIN (\n   SELECT\n     max(CountBids.num) AS maxn,\n     CountBids.starttime,\n     CountBids.endtime\n   FROM (\n     SELECT\n       count(*) AS num,\n       HOP_START(B2.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS starttime,\n       HOP_END(B2.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS endtime\n     FROM bid B2\n     GROUP BY\n       B2.auction,\n       HOP(B2.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND)\n     ) AS CountBids\n   GROUP BY CountBids.starttime, CountBids.endtime\n ) AS MaxBids\n ON AuctionBids.starttime = MaxBids.starttime AND\n    AuctionBids.endtime = MaxBids.endtime AND\n    AuctionBids.num >= MaxBids.maxn\n\"\"\"\n\n\nimport java.util.ArrayList;\nimport org.apache.flink.table.operations.ModifyOperation;\nimport scala.collection.JavaConversions._\nval operations = stenv.getParser().parse(sql)\n//val operations = stenv.getParser().parse(\"INSERT INTO discard_sink SELECT auction, bidder, price, dateTime, extra FROM bid\");\nval operation = operations.get(0)\nvar modifyOperations = new ArrayList[ModifyOperation](1)\nmodifyOperations.add(operation.asInstanceOf[ModifyOperation])\nval transformations = stenv.getPlanner().translate(modifyOperations)\nval streamGraph = senv.getWrappedStreamExecutionEnvironment.generateStreamGraph(transformations)\nprint(\"${TASK_PARALLELISM}\" + \"\\n\")\nprint(\"len \" + \"${TASK_PARALLELISM}\".length + \"\\n\")\n//var map = Map[String, Int]()\nprint(\"len2 \" + \"${TASK_PARALLELISM}\".length + \"\\n\")\nval m = for (line <- \"${TASK_PARALLELISM}\".split('|')) yield {\n    print(line + \"\\n\")\n    val splits: Array[String] = line.split(\";\")\n    if (splits.length > 1) {\n        Option(splits(0) -> splits(1).toInt)\n    } else {\n        None\n    }\n}\nprint(m.length)\nval map = m.flatten.toMap    \nprint(streamGraph)\n//streamGraph.setChaining(true) // activate chaining\nfor(streamNode <- streamGraph.getStreamNodes()) {\n    print(streamNode.getOperatorName() +\"\\n\")\n    streamNode.setSlotSharingGroup(streamNode.getOperatorName())\n    if (streamNode.getOperatorName().contains(\"Source\")) {\n        streamNode.setParallelism(${SOURCES})\n    } else {\n        streamNode.setParallelism(${PARALLELISM})\n    }\n    if (map.contains(streamNode.getOperatorName())) {\n        streamNode.setParallelism(map(streamNode.getOperatorName()))\n        print(streamNode.getOperatorName() + \"-\" + map.get(streamNode.getOperatorName()) +\"\\n\")\n    }\n}\nprint (\"Job name : ${JOB_NAME}\")\nstreamGraph.setJobName(\"${JOB_NAME}\")\n\nsenv.getWrappedStreamExecutionEnvironment.execute(streamGraph)",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-15T20:02:11+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "SOURCES": "32",
+          "PARALLELISM": "1",
+          "TASK_PARALLELISM": "Calc(select=[bid.auction AS \\$f0, PROCTIME() AS processingTime], where=[(event_type = 2)]);4|GroupWindowAggregate(groupBy=[\\$f0], window=[SlidingGroupWindow('w\\$, processingTime, 10000, 2000)], properties=[w\\$start, w\\$end, w\\$proctime], select=[\\$f0, COUNT(*) AS num, start('w\\$) AS w\\$start, end('w\\$) AS w\\$end, proctime('w\\$) AS w\\$proctime]);75|Calc(select=[\\$f0 AS auction, num, w\\$start AS starttime, w\\$end AS endtime]);1|Calc(select=[w\\$start AS starttime, w\\$end AS endtime, num]);1|GroupAggregate(groupBy=[starttime, endtime], select=[starttime, endtime, MAX(num) AS maxn]);5|Calc(select=[maxn, starttime, endtime]);1|Join(joinType=[InnerJoin], where=[((starttime = starttime0) AND (endtime = endtime0) AND (num >= maxn))], select=[auction, num, starttime, endtime, maxn, starttime0, endtime0], leftInputSpec=[HasUniqueKey], rightInputSpec=[JoinKeyContainsUniqueKey]);7|Calc(select=[auction, num]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink], fields=[auction, num]);1",
+          "JOB_NAME": "variable-results/q5-20230415213708-2"
+        },
+        "forms": {
+          "TASK_PARALLELISM": {
+            "type": "TextBox",
+            "name": "TASK_PARALLELISM",
+            "displayName": "TASK_PARALLELISM",
+            "hidden": false,
+            "$$hashKey": "object:16501"
+          },
+          "SOURCES": {
+            "type": "TextBox",
+            "name": "SOURCES",
+            "displayName": "SOURCES",
+            "hidden": false,
+            "$$hashKey": "object:16502"
+          },
+          "PARALLELISM": {
+            "type": "TextBox",
+            "name": "PARALLELISM",
+            "displayName": "PARALLELISM",
+            "hidden": false,
+            "$$hashKey": "object:16503"
+          },
+          "JOB_NAME": {
+            "type": "TextBox",
+            "name": "JOB_NAME",
+            "displayName": "JOB_NAME",
+            "hidden": false,
+            "$$hashKey": "object:16504"
+          }
+        }
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34msql\u001b[0m: \u001b[1m\u001b[32mString\u001b[0m =\n\"\nINSERT INTO discard_sink\nSELECT AuctionBids.auction, AuctionBids.num\n FROM (\n   SELECT\n     B1.auction,\n     count(*) AS num,\n     HOP_START(B1.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS starttime,\n     HOP_END(B1.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS endtime\n   FROM bid B1\n   GROUP BY\n     B1.auction,\n     HOP(B1.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND)\n ) AS AuctionBids\n JOIN (\n   SELECT\n     max(CountBids.num) AS maxn,\n     CountBids.starttime,\n     CountBids.endtime\n   FROM (\n     SELECT\n       count(*) AS num,\n       HOP_START(B2.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS starttime,\n       HOP_END(B2.processingTime, INTERVAL '2' SECOND, INTERVAL '10' SECOND) AS ...\nimport java.util.ArrayList\nimport org.apache.flink.table.operations.ModifyOperation\nimport scala.collection.JavaConversions._\n\u001b[1m\u001b[34moperations\u001b[0m: \u001b[1m\u001b[32mjava.util.List[org.apache.flink.table.operations.Operation]\u001b[0m = [org.apache.flink.table.operations.CatalogSinkModifyOperation@21a1546b]\n\u001b[1m\u001b[34moperation\u001b[0m: \u001b[1m\u001b[32morg.apache.flink.table.operations.Operation\u001b[0m = org.apache.flink.table.operations.CatalogSinkModifyOperation@21a1546b\n\u001b[1m\u001b[34mmodifyOperations\u001b[0m: \u001b[1m\u001b[32mjava.util.ArrayList[org.apache.flink.table.operations.ModifyOperation]\u001b[0m = []\n\u001b[1m\u001b[34mres1\u001b[0m: \u001b[1m\u001b[32mBoolean\u001b[0m = true\n\u001b[1m\u001b[34mtransformations\u001b[0m: \u001b[1m\u001b[32mjava.util.List[org.apache.flink.api.dag.Transformation[_]]\u001b[0m = [LegacySinkTransformation{id=14, name='Sink(table=[default_catalog.default_database.discard_sink], fields=[auction, num])', outputType=GenericType<java.lang.Object>, parallelism=-1}]\n\u001b[1m\u001b[34mstreamGraph\u001b[0m: \u001b[1m\u001b[32morg.apache.flink.streaming.api.graph.StreamGraph\u001b[0m = org.apache.flink.streaming.api.graph.StreamGraph@455eed0\nCalc(select=[bid.auction AS $f0, PROCTIME() AS processingTime], where=[(event_type = 2)]);4|GroupWindowAggregate(groupBy=[$f0], window=[SlidingGroupWindow('w$, processingTime, 10000, 2000)], properties=[w$start, w$end, w$proctime], select=[$f0, COUNT(*) AS num, start('w$) AS w$start, end('w$) AS w$end, proctime('w$) AS w$proctime]);75|Calc(select=[$f0 AS auction, num, w$start AS starttime, w$end AS endtime]);1|Calc(select=[w$start AS starttime, w$end AS endtime, num]);1|GroupAggregate(groupBy=[starttime, endtime], select=[starttime, endtime, MAX(num) AS maxn]);5|Calc(select=[maxn, starttime, endtime]);1|Join(joinType=[InnerJoin], where=[((starttime = starttime0) AND (endtime = endtime0) AND (num >= maxn))], select=[auction, num, starttime, endtime, maxn, starttime0, endtime0], leftInputSpec=[HasUniqueKey], rightInputSpec=[JoinKeyContainsUniqueKey]);7|Calc(select=[auction, num]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink], fields=[auction, num]);1\nlen 983\nlen2 983\nCalc(select=[bid.auction AS $f0, PROCTIME() AS processingTime], where=[(event_type = 2)]);4\nGroupWindowAggregate(groupBy=[$f0], window=[SlidingGroupWindow('w$, processingTime, 10000, 2000)], properties=[w$start, w$end, w$proctime], select=[$f0, COUNT(*) AS num, start('w$) AS w$start, end('w$) AS w$end, proctime('w$) AS w$proctime]);75\nCalc(select=[$f0 AS auction, num, w$start AS starttime, w$end AS endtime]);1\nCalc(select=[w$start AS starttime, w$end AS endtime, num]);1\nGroupAggregate(groupBy=[starttime, endtime], select=[starttime, endtime, MAX(num) AS maxn]);5\nCalc(select=[maxn, starttime, endtime]);1\nJoin(joinType=[InnerJoin], where=[((starttime = starttime0) AND (endtime = endtime0) AND (num >= maxn))], select=[auction, num, starttime, endtime, maxn, starttime0, endtime0], leftInputSpec=[HasUniqueKey], rightInputSpec=[JoinKeyContainsUniqueKey]);7\nCalc(select=[auction, num]);1\nSink: Sink(table=[default_catalog.default_database.discard_sink], fields=[auction, num]);1\n\u001b[1m\u001b[34mm\u001b[0m: \u001b[1m\u001b[32mArray[Option[(String, Int)]]\u001b[0m = Array(Some((Calc(select=[bid.auction AS $f0, PROCTIME() AS processingTime], where=[(event_type = 2)]),4)), Some((GroupWindowAggregate(groupBy=[$f0], window=[SlidingGroupWindow('w$, processingTime, 10000, 2000)], properties=[w$start, w$end, w$proctime], select=[$f0, COUNT(*) AS num, start('w$) AS w$start, end('w$) AS w$end, proctime('w$) AS w$proctime]),75)), Some((Calc(select=[$f0 AS auction, num, w$start AS starttime, w$end AS endtime]),1)), Some((Calc(select=[w$start AS starttime, w$end AS endtime, num]),1)), Some((GroupAggregate(groupBy=[starttime, endtime], select=[starttime, endtime, MAX(num) AS maxn]),5)), Some((Calc(select=[maxn, starttime, endtime]),1)), Some((Join(joinType=[InnerJoin], where=[((starttime = starttime0) ...\n9\u001b[1m\u001b[34mmap\u001b[0m: \u001b[1m\u001b[32mscala.collection.immutable.Map[String,Int]\u001b[0m = Map(Join(joinType=[InnerJoin], where=[((starttime = starttime0) AND (endtime = endtime0) AND (num >= maxn))], select=[auction, num, starttime, endtime, maxn, starttime0, endtime0], leftInputSpec=[HasUniqueKey], rightInputSpec=[JoinKeyContainsUniqueKey]) -> 7, GroupWindowAggregate(groupBy=[$f0], window=[SlidingGroupWindow('w$, processingTime, 10000, 2000)], properties=[w$start, w$end, w$proctime], select=[$f0, COUNT(*) AS num, start('w$) AS w$start, end('w$) AS w$end, proctime('w$) AS w$proctime]) -> 75, Sink: Sink(table=[default_catalog.default_database.discard_sink], fields=[auction, num]) -> 1, Calc(select=[auction, num]) -> 1, GroupAggregate(groupBy=[starttime, endtime], select=[starttime, endtime, MAX(num) A...\norg.apache.flink.streaming.api.graph.StreamGraph@455eed0\u001b[33mwarning: \u001b[0mthere was one deprecation warning (since 2.12.0); for details, enable `:setting -deprecation' or `:replay -deprecation'\nSource: KafkaSource-default_catalog.default_database.kafka\nCalc(select=[bid.auction AS $f0, PROCTIME() AS processingTime], where=[(event_type = 2)])\nCalc(select=[bid.auction AS $f0, PROCTIME() AS processingTime], where=[(event_type = 2)])-Some(4)\nGroupWindowAggregate(groupBy=[$f0], window=[SlidingGroupWindow('w$, processingTime, 10000, 2000)], properties=[w$start, w$end, w$proctime], select=[$f0, COUNT(*) AS num, start('w$) AS w$start, end('w$) AS w$end, proctime('w$) AS w$proctime])\nGroupWindowAggregate(groupBy=[$f0], window=[SlidingGroupWindow('w$, processingTime, 10000, 2000)], properties=[w$start, w$end, w$proctime], select=[$f0, COUNT(*) AS num, start('w$) AS w$start, end('w$) AS w$end, proctime('w$) AS w$proctime])-Some(75)\nCalc(select=[$f0 AS auction, num, w$start AS starttime, w$end AS endtime])\nCalc(select=[$f0 AS auction, num, w$start AS starttime, w$end AS endtime])-Some(1)\nCalc(select=[w$start AS starttime, w$end AS endtime, num])\nCalc(select=[w$start AS starttime, w$end AS endtime, num])-Some(1)\nGroupAggregate(groupBy=[starttime, endtime], select=[starttime, endtime, MAX(num) AS maxn])\nGroupAggregate(groupBy=[starttime, endtime], select=[starttime, endtime, MAX(num) AS maxn])-Some(5)\nCalc(select=[maxn, starttime, endtime])\nCalc(select=[maxn, starttime, endtime])-Some(1)\nJoin(joinType=[InnerJoin], where=[((starttime = starttime0) AND (endtime = endtime0) AND (num >= maxn))], select=[auction, num, starttime, endtime, maxn, starttime0, endtime0], leftInputSpec=[HasUniqueKey], rightInputSpec=[JoinKeyContainsUniqueKey])\nJoin(joinType=[InnerJoin], where=[((starttime = starttime0) AND (endtime = endtime0) AND (num >= maxn))], select=[auction, num, starttime, endtime, maxn, starttime0, endtime0], leftInputSpec=[HasUniqueKey], rightInputSpec=[JoinKeyContainsUniqueKey])-Some(7)\nCalc(select=[auction, num])\nCalc(select=[auction, num])-Some(1)\nSink: Sink(table=[default_catalog.default_database.discard_sink], fields=[auction, num])\nSink: Sink(table=[default_catalog.default_database.discard_sink], fields=[auction, num])-Some(1)\nJob name : variable-results/q5-20230415213708-2org.apache.flink.runtime.rest.util.RestClientException: [org.apache.flink.runtime.rest.handler.RestHandlerException: org.apache.flink.runtime.messages.FlinkJobNotFoundException: Could not find Flink job (32c0049da85cdd5bd4e1258402d1753b)\n\tat org.apache.flink.runtime.rest.handler.job.JobExecutionResultHandler.propagateException(JobExecutionResultHandler.java:94)\n\tat org.apache.flink.runtime.rest.handler.job.JobExecutionResultHandler.lambda$handleRequest$1(JobExecutionResultHandler.java:84)\n\tat java.util.concurrent.CompletableFuture.uniExceptionally(CompletableFuture.java:884)\n\tat java.util.concurrent.CompletableFuture$UniExceptionally.tryFire(CompletableFuture.java:866)\n\tat java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:488)\n\tat java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:1990)\n\tat org.apache.flink.runtime.rpc.akka.AkkaInvocationHandler.lambda$invokeRpc$0(AkkaInvocationHandler.java:246)\n\tat java.util.concurrent.CompletableFuture.uniWhenComplete(CompletableFuture.java:774)\n\tat java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(CompletableFuture.java:750)\n\tat java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:488)\n\tat java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:1990)\n\tat org.apache.flink.util.concurrent.FutureUtils.doForward(FutureUtils.java:1387)\n\tat org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.lambda$null$1(ClassLoadingUtils.java:93)\n\tat org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:68)\n\tat org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.lambda$guardCompletionWithContextClassLoader$2(ClassLoadingUtils.java:92)\n\tat java.util.concurrent.CompletableFuture.uniWhenComplete(CompletableFuture.java:774)\n\tat java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(CompletableFuture.java:750)\n\tat java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:488)\n\tat java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:1990)\n\tat org.apache.flink.runtime.concurrent.akka.AkkaFutureUtils$1.onComplete(AkkaFutureUtils.java:45)\n\tat akka.dispatch.OnComplete.internal(Future.scala:299)\n\tat akka.dispatch.OnComplete.internal(Future.scala:297)\n\tat akka.dispatch.japi$CallbackBridge.apply(Future.scala:224)\n\tat akka.dispatch.japi$CallbackBridge.apply(Future.scala:221)\n\tat scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)\n\tat org.apache.flink.runtime.concurrent.akka.AkkaFutureUtils$DirectExecutionContext.execute(AkkaFutureUtils.java:65)\n\tat scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:68)\n\tat scala.concurrent.impl.Promise$DefaultPromise.$anonfun$tryComplete$1(Promise.scala:284)\n\tat scala.concurrent.impl.Promise$DefaultPromise.$anonfun$tryComplete$1$adapted(Promise.scala:284)\n\tat scala.concurrent.impl.Promise$DefaultPromise.tryComplete(Promise.scala:284)\n\tat akka.pattern.PromiseActorRef.$bang(AskSupport.scala:621)\n\tat akka.pattern.PipeToSupport$PipeableFuture$$anonfun$pipeTo$1.applyOrElse(PipeToSupport.scala:25)\n\tat akka.pattern.PipeToSupport$PipeableFuture$$anonfun$pipeTo$1.applyOrElse(PipeToSupport.scala:23)\n\tat scala.concurrent.Future.$anonfun$andThen$1(Future.scala:532)\n\tat scala.concurrent.impl.Promise.liftedTree1$1(Promise.scala:29)\n\tat scala.concurrent.impl.Promise.$anonfun$transform$1(Promise.scala:29)\n\tat scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)\n\tat akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:63)\n\tat akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:100)\n\tat scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)\n\tat scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:81)\n\tat akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:100)\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:49)\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:48)\n\tat java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)\n\tat java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)\n\tat java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)\n\tat java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:175)\nCaused by: java.util.concurrent.CompletionException: org.apache.flink.runtime.messages.FlinkJobNotFoundException: Could not find Flink job (32c0049da85cdd5bd4e1258402d1753b)\n\tat java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:292)\n\tat java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:308)\n\tat java.util.concurrent.CompletableFuture.uniCompose(CompletableFuture.java:957)\n\tat java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:940)\n\t... 44 more\nCaused by: org.apache.flink.runtime.messages.FlinkJobNotFoundException: Could not find Flink job (32c0049da85cdd5bd4e1258402d1753b)\n\tat org.apache.flink.runtime.dispatcher.Dispatcher.lambda$requestJobStatus$15(Dispatcher.java:603)\n\tat java.util.Optional.orElseGet(Optional.java:267)\n\tat org.apache.flink.runtime.dispatcher.Dispatcher.requestJobStatus(Dispatcher.java:597)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRpcInvocation$1(AkkaRpcActor.java:316)\n\tat org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:83)\n\tat org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcInvocation(AkkaRpcActor.java:314)\n\tat org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:217)\n\tat org.apache.flink.runtime.rpc.akka.FencedAkkaRpcActor.handleRpcMessage(FencedAkkaRpcActor.java:78)\n\tat org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:163)\n\tat akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24)\n\tat akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20)\n\tat scala.PartialFunction.applyOrElse(PartialFunction.scala:123)\n\tat scala.PartialFunction.applyOrElse$(PartialFunction.scala:122)\n\tat akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20)\n\tat scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:171)\n\tat scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:172)\n\tat scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:172)\n\tat akka.actor.Actor.aroundReceive(Actor.scala:537)\n\tat akka.actor.Actor.aroundReceive$(Actor.scala:535)\n\tat akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220)\n\tat akka.actor.ActorCell.receiveMessage(ActorCell.scala:580)\n\tat akka.actor.ActorCell.invoke(ActorCell.scala:548)\n\tat akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270)\n\tat akka.dispatch.Mailbox.run(Mailbox.scala:231)\n\tat akka.dispatch.Mailbox.exec(Mailbox.scala:243)\n\t... 4 more\n]\n  at org.apache.flink.runtime.rest.RestClient.parseResponse(RestClient.java:532)\n  at org.apache.flink.runtime.rest.RestClient.lambda$submitRequest$3(RestClient.java:512)\n  at java.util.concurrent.CompletableFuture.uniCompose(CompletableFuture.java:966)\n  at java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:940)\n  at java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:456)\n  at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n  at java.lang.Thread.run(Thread.java:748)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "FLINK JOB",
+          "tooltip": "View in Flink web UI",
+          "group": "flink",
+          "values": [
+            {
+              "jobUrl": "http://nexmark-flink-jobmanager.default:8081#/job/32c0049da85cdd5bd4e1258402d1753b",
+              "$$hashKey": "object:16818"
+            }
+          ],
+          "interpreterSettingId": "flink"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1681556895944_599898383",
+      "id": "paragraph_1661521013634_1946755723",
+      "dateCreated": "2023-04-15T11:08:15+0000",
+      "dateStarted": "2023-04-15T20:02:11+0000",
+      "dateFinished": "2023-04-15T20:32:17+0000",
+      "status": "ERROR",
+      "$$hashKey": "object:16267"
+    },
+    {
+      "text": "%flink.ssql\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-04-15T11:08:15+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1681556895944_335973602",
+      "id": "paragraph_1681056874168_17069773",
+      "dateCreated": "2023-04-15T11:08:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:16268"
+    }
+  ],
+  "name": "xp_intro_q5_kafka_custom_ratelimit",
+  "id": "2HXS4HNMD",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.10.1",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {
+    "isRunning": false
+  },
+  "path": "/xp_intro_q5_kafka_custom_ratelimit"
+}

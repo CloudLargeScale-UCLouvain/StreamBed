@@ -1,0 +1,4887 @@
+- configuration: &id002
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: &id003
+      cooldown_throughput: 200
+      higher_bound_ratio: 2
+      initial_rate: 100000000
+      mean_threshold: 0.01
+      observation_size: 30
+      size_window: 60
+      slide_window: 75
+      timeout: 600
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 44
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 03f9de355837d9f6dab4db75e2204997
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - &id001 !!python/object/apply:numpy.dtype
+      args:
+      - f8
+      - false
+      - true
+      state: !!python/tuple
+      - 3
+      - <
+      - null
+      - null
+      - null
+      - -1
+      - -1
+      - 0
+    - !!binary |
+      QD3znitx7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      IWEcRb+8uj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      IWEcRb+8uj8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      y3lZxDfvIkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KqWUUopHMEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HtRBHRRKlkA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAgKoCPkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      OB6LDGpg5EA=
+  task_parallelism: ''
+- configuration: *id002
+  job_id: f469f81920f6a838b3a7f504e1097fcb
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      03W5ZQJu7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UwDWvW19lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UwDWvW19lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bNDky332PUE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      PKYG9o6zK0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nTJyum238EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      XHTRRdE7SEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ZVl+F5ho6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id002
+  job_id: f992b99244d22c0ab6f827446ee1dc0e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ycY7waZw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      awOqQVSdlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      awOqQVSdlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      S2ngb/zfPkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      G8prKCdoKUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      eKDY6eYE3EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AQAAQOcUTkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Qw/rP0uZ6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id004
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 48
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: b851f1e663c192755608dc2445aea619
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      j0gGVMpy7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      06z4zjhrlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7NY6dKtrlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GQa0vvFOP0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAFhZL0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Km7qi3pn3EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      dmIndmAbTkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cP+hwpZF60A=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id004
+  job_id: 49c2f936802f686c73e947184e2162d5
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tW8Uwrxw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      zYayIOKPlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      zoayIOKPlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      j3y7Zmi2OEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ++mnn35lMUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      t23bttHt10A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Y4wxxqAZSkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nPRE2LOw6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id004
+  job_id: 77902f5e5c23069299ecd8f845421b98
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      t1Ncvt9w7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4zvoaRIslD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      c55yNJ4rlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      llL9Nos0PkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VVVVVemVMEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      eWIACgRPDkE=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      q6qqKnIdT0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Jxj2DiuF60A=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id005
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 64
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: dac0e4102af0dc4958d8b0dbb990af58
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ryO/2A1v7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YvVPebt8lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5ZKoYsN+lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      3KLRND0yP0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      aoXNgUynNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GHttmvG/7kA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      oosuun92UUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7F4yp95a6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id005
+  job_id: 4bc4f4854083d53cef56bca78769dd06
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +jLUF8Vw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5yjzzR5/lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5yjzzR5/lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Der3FxqeM0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VSqVSqVNFkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LgmOZkQF0EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAA2+QUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      TnhqSXf160A=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id005
+  job_id: d7d7a48977e549f9fc55988fe9cfceeb
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qJF8TyJw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1FgQI0U0lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HK0GpWw2lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      d7W4Kbu+PUE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      33VAN2YlNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      PgeJFvmi7UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /////0XITkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      zGrD+CVQ6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id006
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 80
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: e3918b05edc77d1a7289d2b6bddbf506
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 42
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      oCx01BBw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      XpyNt8F7lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +CfGgLx8lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Fp0NgIwFPEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QfWZto44PEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1vw8087p7EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vE9xydaEUEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UTWTOfHR6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);4|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);42|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id006
+  job_id: 1cb4899ab92a0cb4361bedede4f8a027
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 42
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      FaAiipNw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Zh1dV4OJlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      TMlRoBWLlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HA0GtDuPOkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Z4nxKdvKNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bCAyoB817UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GH41JkYUTkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VwwFB2Wl6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);4|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);42|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id006
+  job_id: e377b086fe77bc32a07f067f7f30802a
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 42
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      aZzZoeBw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8YBdt5uNlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8YBdt5uNlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      P2wAGldNLEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AQAAAODfG0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QR3UQcmVw0A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      SZIkSXKBQEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4qJZSayg6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);4|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);42|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id007
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 44
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 60e5cf07b6aa9e3fea869ecad5764274
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uEJkAlNy7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      lk11FxxeuT8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      lk11FxxeuT8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      n0ohfRXlK0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nnPOObfgMEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7lpWRVNFnkA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /////2e+SkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qIM6qCOy5kA=
+  task_parallelism: ''
+- configuration: *id007
+  job_id: a3afc817a33074df7087353548df79c3
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HcIyJEVu7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nr1YDGZ0lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      iSsw3DpzlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tGv3B8B4QEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      o6nza+8FKkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GW7dTiHe10A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      XXTRRQF/SEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NJ3blfDI6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id007
+  job_id: 84a54a9171ac15e5b2efab5ae4d29bc9
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1MbGqqNw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tWiIAU+UlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NNZ1SEuUlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      wRMGeO6xQEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QxGKUPTXKEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      oWmLMD7F5UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JUmSJIViSkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9rFdedAC60A=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id008
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 48
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 6e5cfa9d78efe860b02ec1bf0f374c80
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      quWRdR1x7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      3KsHtneKlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      K8zIs82KlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      L5nW04/CQEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      d8Qdcds4MUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      r4QT0tZs4UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7SW0lySLS0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MQmcPP5K60A=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id008
+  job_id: 378b35113df511accc706679494d6299
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YoZeqQty7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      dmYh3hKHlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tJXeEeqFlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      6TikuBQsP0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5mqu5uJCMEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      fM5GBN181kA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAgCnTTkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      h07xO2XU6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id008
+  job_id: 30c7b7f8f0c6842dcea6f09812582c85
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Vww2IBdw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      wem7aBlrlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      q3UXuzdtlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      pP1OAC3QPkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KlSoULHyNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      mHtPiOaB2EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      SZIkSbrURUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Dw8YhF/26kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id009
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 64
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 59d4e0ff624ae12517be1f97c9f31ba0
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tc+u6sxx7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Bo/UUdGGlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      yC7DBJWHlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Xn9UG0fgP0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xU7sxAqIOEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UmDGPXTv8UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rQ+N9e1AUEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DMzw9w8o6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id009
+  job_id: 6a2f45e4c6f8d96f942a8e9391491a34
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      csnPNJNw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RkIeDp1zlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      FBgnab95lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      EzbTNuqFPUE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LBWxVDxpNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      dtSOM3Sa70A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAQJjTUkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KcKAlQgU6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id009
+  job_id: 7291b9072c729d9caa948d35e772a445
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      o6zbwfJw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cK+jkaiQlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jpJn4tuQlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      OY7jaLjZPEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      36/ihIR5OEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      80fCYabF6UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xE7sxBztTkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      IsRhSdF66UA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id010
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 80
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 043eacb49e7c318572425adf0ec68ef0
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 43
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gCFxt8hx7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1JYeOwdalD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LKJA8DpelD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Pxq8/JVqPkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      XXTRxWMcO0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ktuECSau/EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VlVV1f3aU0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QjZ6jX6/6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);3|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);43|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id010
+  job_id: 31e21f334af3d24d2b8ec366935e07be
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 43
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      0vLo4MFw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      foYgZZxtlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gyjo2cFtlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      J9zGBSCWO0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      E097XE1qN0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      76ulofvX/0A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ////f4WhUkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      zRZqhliQ6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);3|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);43|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id010
+  job_id: 256749165b7382202e075f4c084d6bc4
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 43
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qCFgDnpw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QdkfmvhnlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9i4D+zBplD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      eSUV0MapPEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YEzi4GXrOUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      zEAZtac29kA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jq0IGgbdU0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4ptIK95H6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);3|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);43|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id011
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 44
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: d7a64051a7dc4d043f01229e8cb1fa96
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xFudkjRv7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8t6WTqDquT8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8t6WTqDquT8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      F1Z6akFAJkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAHDQLkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      6aAO6kBsnUA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qqqqqmo1QUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kiRJkkSw5kA=
+  task_parallelism: ''
+- configuration: *id011
+  job_id: 7d9e1b3725aa999e6546d6ac490396a7
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5OWlSaNw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tMBt9ulvlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      mAhSl8xulD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4zDqwGKcM0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      EJZ7GmE1J0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qIM6qLOZw0A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VFVVVf2TQkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9E3e64y/6UA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id011
+  job_id: 8e4ee670d589b310e4e0572fa99403fc
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Tn79/Utw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9aDcXydilD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9aDcXydilD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      pzOujk2nNkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kiFYRxtYMkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      B9TNZITw0EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DeU1lM8eTUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NiCQlCBv6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id012
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 48
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: e03a6596a0af297b6ff2c2eb843ac573
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tdLBOQ1v7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      BSClC4eclD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      BSClC4eclD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      neRsBqsDPUE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAgPDKNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xkh+e6z620A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KHZiJ3b8T0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AdFxpnsa60A=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id012
+  job_id: 0f160fdc7e88411ffe380c279ce471d5
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Bg5M4aJw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8b00GdlelD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8b00GdlelD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Pozcbt4dP0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VVVVlQ6aMEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      F7zanwTVAUE=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AgAAgHv6SEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +js6KwBX7EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id012
+  job_id: f7f28a11880c0283ed8eaa167112d74c
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      grpqruBw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4tBnNoSglD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /ZYWU8+hlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xF0jBwa+NUE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ZCELWYg6JEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      fcVXfA2bw0A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      W1paWpJWREE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      I9G/HhLU6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id013
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 64
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 1190425444873a1a0be6e377b083cfb6
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      CIBogVhv7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      sE75PwlrlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Q+edzCxslD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YZEy8Iw6QEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tSVtSUN1N0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      BhqGwLeR7EA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GYZhGAh6UkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      c5nDE0ep6UA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id013
+  job_id: fd992b214611087cb4c0099415027fa4
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GftKeYFw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      EpKxrvd4lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QxlgS5V5lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4bIarFSlPUE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MAzDMBwmNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tJjZ8Iar7UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KWvKml40UUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      b496qq646UA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id013
+  job_id: bd3ca29763b5bb29bb8ce21a5503a90e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      SX0M99Fx7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      muJy7sC3lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xG5Ggu+2lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NmD4Zy1uPUE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      2dfX11cTNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      a2yvpc5p6UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gpdT8D52UEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bLz2O2yy6UA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id014
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 80
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 4fb2f7238f5d8a9a692cf9161886e352
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 43
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VpFpHIdv7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      XkB/tKVQlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      k5OindZQlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      freihrCPP0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      W2uttS6WNkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      X3vIZdVfAUE=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      V1VVdZyCWUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      w4j9eD/H6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);3|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);43|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id014
+  job_id: a9d9e2e1fedf85592a8dc4cbc9ea9614
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 43
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8y7vNxlw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MQCtjt2BlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MQCtjt2BlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ulGY1z7vPEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5bNuMC0DOkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AQxjtpEP+0A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1NLSUkKyUUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1D1LB7h+6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);3|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);43|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id014
+  job_id: 43298c961286dc7590be581f71f48f55
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 43
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jEq0NZlw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ocl3MZJmlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ocl3MZJmlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      lDNr6VocMEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      dX26Pt2uEkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bpR7r+KmxUA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VFVVVd2KQ0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7eY0qvwi6EA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);3|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);43|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id015
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 44
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 4163f82f61ab6ded5ee101b38175058f
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NMJwcUxw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Wa3yn2PUuj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Wa3yn2PUuj8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1fqVAlX9J0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAABBqMkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GspiLQL/m0A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ii666A6xOEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      sPiKrzi95UA=
+  task_parallelism: ''
+- configuration: *id015
+  job_id: cab06bb27c14194e4e347553669c3663
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      hhgVqxZy7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      BcS5wruylD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KoR/4FyxlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VKEYoKj2QEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAACwDLEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      p/xMrrR16kA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      4ziO41YfT0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vhGQRXin6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id015
+  job_id: 7c1a952d8c300318a436f44f93007082
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 9
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rz6t/sNv7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MO5rAZaAlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MO5rAZaAlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      3IiJ9VUnP0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YbmnEWIwMEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kUGVwvoz2UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jC666NJPRUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      m0laefqq6UA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);9|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id016
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 48
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 933a7425c9a29991f77f2c58743ae28c
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qnlUtI9v7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      g+QVDRNzlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      g+QVDRNzlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rsEEw1vFQEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5LNuMH0FM0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Vm94AwUl20A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ZSELWbycTkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vzUiIVfh6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id016
+  job_id: 0438a0fc97efe40dd792130f88988e95
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      L3hKFIhw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9AyPiPlFlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9AyPiPlFlD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8rg7zHIOQEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      e57nea6ULEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      SUKk4YMh4kA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      t23btj1NUUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VfwV9ZwX60A=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id016
+  job_id: afefea8abe54559ee17c0630027875a2
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 13
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      msYGTsFw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NN+t/u10lD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      lxOwYz55lD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      WcXtnEqzQEE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qqqqqsMPNUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      lRFr/FfF3kA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      SZIkSWb2SkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9a5C6FzF6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);13|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: &id017
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q11_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 32
+    task_managers_qty: 8
+    task_slots_limit: 64
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 501685fbc9dd2ab552940ad37cb35c29
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      poRI/Rtx7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      oNLyZvOalD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      dd6H4RealD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9aWHpplSM0E=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      X3TRRQdBGUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      X/EVX22Ww0A=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uuiii4oAT0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      6V4Clj0Z6kA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'
+- configuration: *id017
+  job_id: e98440ef0e30eae27a9aa69ebc733e30
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 32
+  - description: Calc(select=[bid.bidder AS $f0, PROCTIME() AS processingTime], where=[(event_type
+      = 2)])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: GroupWindowAggregate(groupBy=[$f0], window=[SessionGroupWindow('w$,
+      processingTime, 10000)], properties=[w$start, w$end, w$proctime], select=[$f0,
+      COUNT(*) AS bid_count, start('w$) AS w$start, end('w$) AS w$end, proctime('w$)
+      AS w$proctime])
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: HASH
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 28
+  - description: Calc(select=[$f0 AS bidder, bid_count, w$start AS starttime, w$end
+      AS endtime])
+    id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+    inputs:
+    - exchange: pipelined_bounded
+      id: ea632d67b7d595e5b851708ae9ad79d6
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[bidder, bid_count, starttime, endtime])'
+    id: ddb598ad156ed281023ba4eebbe487e3
+    inputs:
+    - exchange: pipelined_bounded
+      id: 6d2677a0ecc3fd8df0b72ec675edf8f4
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ltZrJshw7T8=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kSgZWSaBlD8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vsQkXwaClD8=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      iwFlGE0uPkE=
+    6d2677a0ecc3fd8df0b72ec675edf8f4: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      F2RckOGCNEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      EymdteLy5UA=
+    ddb598ad156ed281023ba4eebbe487e3: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      onYlaoOXUEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      TlpEZ0nL6UA=
+  task_parallelism: 'Calc(select=[bid.bidder AS \$f0, PROCTIME() AS processingTime],
+    where=[(event_type = 2)]);2|GroupWindowAggregate(groupBy=[\$f0], window=[SessionGroupWindow(''w\$,
+    processingTime, 10000)], properties=[w\$start, w\$end, w\$proctime], select=[\$f0,
+    COUNT(*) AS bid_count, start(''w\$) AS w\$start, end(''w\$) AS w\$end, proctime(''w\$)
+    AS w\$proctime]);28|Calc(select=[\$f0 AS bidder, bid_count, w\$start AS starttime,
+    w\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[bidder, bid_count, starttime, endtime]);1'

@@ -1,0 +1,227 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zeppelin-server
+  labels:
+    app.kubernetes.io/name: zeppelin-server
+  namespace: manager    
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zeppelin-server
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zeppelin-server
+    spec:
+      nodeSelector:
+        tier: manager      
+      serviceAccountName: zeppelin-server
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: zeppelin-server-conf
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+      - name: zeppelin-server-conf-interpreter-k8s
+        configMap:
+          name: zeppelin-server-conf-map
+          items:
+          - key: 100-interpreter-spec.yaml
+            path: 100-interpreter-spec.yaml
+      - name: zeppelin-server-conf-site
+        configMap:
+          name: zeppelin-server-conf-map
+          items:
+          - key: zeppelin-site.xml
+            path: zeppelin-site.xml
+      - name: flink-volume
+        emptyDir: {}      
+      - name: zeppelin-volume
+        persistentVolumeClaim:
+          claimName: zeppelin-volume
+      initContainers:
+      - name: flink-downloader
+        image: mwendler/wget
+        volumeMounts:
+          - mountPath: /opt/flink
+            name: flink-volume              
+        command: ["sh"]
+        args:
+          [
+            "-c",
+            "wget --no-check-certificate https://archive.apache.org/dist/flink/flink-1.14.2/flink-1.14.2-bin-scala_2.12.tgz ; 
+             tar xzf flink-1.14.2-bin-scala_2.12.tgz ;
+             mv ./flink-1.14.2/* /opt/flink ;
+             wget --no-check-certificate https://repo1.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka_2.12/1.14.2/flink-sql-connector-kafka_2.12-1.14.2.jar -P /opt/flink/lib ;
+             wget --no-check-certificate https://repo1.maven.org/maven2/org/apache/flink/flink-connector-kafka_2.12/1.14.2/flink-connector-kafka_2.12-1.14.2.jar -P /opt/flink/lib ;"
+          ]          
+      containers:
+      - name: zeppelin-server
+        image: apache/zeppelin:0.10.1
+        command: ["sh", "-c", "$(ZEPPELIN_HOME)/bin/zeppelin.sh"]
+        lifecycle:
+          preStop:
+            exec:
+              # SIGTERM triggers a quick exit; gracefully terminate instead
+              command: ["sh", "-c", "ps -ef | grep org.apache.zeppelin.server.ZeppelinServer | grep -v grep | awk '{print $2}' | xargs kill"]
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        - name: rpc
+          containerPort: 12320
+        env:
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.uid
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        volumeMounts:
+          - mountPath: /opt/flink
+            name: flink-volume
+          - mountPath: /opt/zeppelin/k8s/interpreter/
+            name: zeppelin-server-conf-interpreter-k8s
+          - name: zeppelin-volume     # configure this to persist notebook
+            mountPath: /opt/zeppelin/notebook
+          #- mountPath: /opt/zeppelin/conf
+          #  name: zeppelin-server-conf-site
+          #  subPath: zeppelin-site.xml
+        envFrom:
+        - configMapRef:
+            name: zeppelin-server-conf-map
+      #  - name: zeppelin-server-conf                # configure this to persist Zeppelin configuration
+      #    mountPath: /zeppelin/conf
+      #  - name: zeppelin-server-custom-k8s          # configure this to mount customized Kubernetes spec for interpreter
+      #    mountPath: /zeppelin/k8s
+      - name: zeppelin-server-gateway
+        image: nginx:1.14.0
+        command: ["/bin/sh", "-c"]
+        env:
+        - name: SERVICE_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: zeppelin-server-conf-map
+              key: SERVICE_DOMAIN
+        args:
+          - cp -f /tmp/conf/nginx.conf /etc/nginx/nginx.conf;
+            sed -i -e "s/SERVICE_DOMAIN/$SERVICE_DOMAIN/g" /etc/nginx/nginx.conf;
+            sed -i -e "s/NAMESPACE/$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)/g" /etc/nginx/nginx.conf;
+            cat /etc/nginx/nginx.conf;
+            /usr/sbin/nginx
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /tmp/conf
+          - name: flink-volume
+            mountPath: /opt/flink
+        lifecycle:
+          preStop:
+            exec:
+              # SIGTERM triggers a quick exit; gracefully terminate instead
+              command: ["/usr/sbin/nginx", "-s", "quit"]
+      - name: dnsmasq  # nginx requires dns resolver for dynamic dns resolution
+        image: "janeczku/go-dnsmasq:release-1.0.5"
+        args:
+          - --listen
+          - "127.0.0.1:53"
+          - --default-resolver
+          - --append-search-domains
+          - --hostsfile=/etc/hosts
+          - --verbose
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zeppelin-server
+  namespace: manager  
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      nodePort: 30088
+    - name: http2
+      port: 8080
+    - name: rpc            # port name is referenced in the code. So it shouldn't be changed.
+      port: 12320
+  selector:
+    app.kubernetes.io/name: zeppelin-server
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: zeppelin-server
+  namespace: manager  
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: zeppelin-server-role
+  namespace: manager  
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps"]
+  verbs: ["create", "get", "update", "patch", "list", "delete", "watch"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles", "rolebindings"]
+  verbs: ["bind", "create", "get", "update", "patch", "list", "delete", "watch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: zeppelin-server-role-binding
+  namespace: manager
+subjects:
+- kind: ServiceAccount
+  name: zeppelin-server
+roleRef:
+  kind: ClusterRole
+  name: zeppelin-server-role
+  apiGroup: rbac.authorization.k8s.io
+---        
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zeppelin
+  namespace: manager
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  rules:
+  - host: zeppelin.127-0-0-1.sslip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: zeppelin-server
+            port:
+              number: 8080
