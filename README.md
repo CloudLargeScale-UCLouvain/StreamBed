@@ -6,11 +6,9 @@ StreamBed is a capacity planning system for stream processing. It predicts, ahea
 
 ## Authors
 
-[Guillaume Rosinosky](https://github.com/guillaumerosinosky)
-[Donatien Schmitz](https://github.com/Donaschmi)
-[Etienne Rivière](https://github.com/etriviere)
+[Guillaume Rosinosky](https://github.com/guillaumerosinosky) - [Donatien Schmitz](https://github.com/Donaschmi) - [Etienne Rivière](https://github.com/etriviere)
 
-[Contact](etienne.riviere@uclouvain.be)
+[Contact](mailto:etienne.riviere@uclouvain.be)
 
 ## Table of Contents
 
