@@ -1,13 +1,22 @@
 # Streambed: capacity planning for steam processing
 
-This repository contains instructions for reproducing the experiments in our ICDE'23 paper "Streambed: capacity planning for steam processing".
+This repository contains instructions for reproducing the experiments in our ICDE'23 submission "Streambed: capacity planning for steam processing".
 
 StreamBed is a capacity planning system for stream processing. It predicts, ahead of any production deployment, the resources that a query will require to process an incoming data rate sustainably, and the appropriate configuration of these resources. StreamBed builds a capacity planning model by piloting a series of runs of the target query in a small-scale, controlled testbed. We implement StreamBed for the popular Flink DSP engine. Our evaluation with large-scale queries of the Nexmark benchmark demonstrates that StreamBed can effectively and accurately predict capacity requirements for jobs spanning more than 1,000 cores using a testbed of only 48 cores.
 
+## Authors
+
+[Guillaume Rosinosky](https://github.com/guillaumerosinosky)
+[Donatien Schmitz](https://github.com/Donaschmi)
+[Etienne Rivière](https://github.com/etriviere)
+
+[Contact](etienne.riviere@uclouvain.be)
+
 ## Table of Contents
 
+- [Project Structure](#project-structure)
 - [Description & Requirements](#description--requirements)
-- [Setup and Run Streambed](#install-and-run-streambed)
+- [Setup and Run Streambed](#installing-and-running-streambed)
 - [Experiments with StreamBed](#experiments-with-streambed)
 - [StreamBed Source Code](#streambed-source-code)
 - [Reproducing the ICDE23 results](#reproducing-the-icde23-results)
@@ -32,7 +41,7 @@ Streambed can be downloaded from the following link: https://github.com/CloudLar
 
 Streambed assumes a working Kubernetes installation comprising an Apache Kafka installation (that can be deployed by Streambed scripts) and will iteratively deploy and test various Flink installations.
 
-The Kubernetes cluster should be dimensioned accordingly. We assume that each Flink Job Manager, Task Manager and Kafka node has a dedicated node (a node can be bare-metal or a small VM):
+The Kubernetes cluster should be dimensioned accordingly: sufficient quantities of resources should be available for Flink Job Manager, Task Manager and Kafka nodes (if managed by Streambed). A node can be bare-metal or a small VM:
 
 - a Kafka installation of $K$ nodes preferably with fast SSDs (if deployed by Streambed)
 - a Flink installation of 1 job manager and $T$ task managers
@@ -58,11 +67,11 @@ The control machine should have a running installation of [Jupyter](https://jupy
   - [Strimzi Kafka operator](https://github.com/strimzi/strimzi-kafka-operator/releases/tag/0.28.0): easy deployment of Kafka, and topic management, if no existing Kafka installation is available.
   - Grafana (Prometheus UI)
 
-## Install and Run StreamBed
+## Installing and Running StreamBed
 
 ### Install build-essentials (e.g., dependencies)
 
-The installation of the Streambed Python dependencies is straightforward.
+The installation of Streambed Python dependencies is straightforward.
 
 ```bash
 cd streambed
@@ -73,8 +82,8 @@ pip install -r requirements.txt
 
 Additional dependencies should be cloned, built and placed accordingly in the [./tmp](./tmp) directory before the deployment:
 
-- [Rate-limited Kafka connector](https://github.com/guillaumerosinosky/flink-connector-kafka-ratelimit): this module permits Streambed to control the current reading rate. This connector is used in the job as a source. Our scripts expect the build `flink-sql-connector-kafka-ratelimit_2.12-1.14.2.jar` present in the [tmp](./tmp) directory.
-- Facultative: [Nexmark benchmark](https://github.com/guillaumerosinosky/nexmark): [Nexmark](https://github.com/nexmark/nexmark) fork linked on Apache Flink 1.14.2. Our scripts expect the build `nexmark-flink-0.2-SNAPSHOT.jar` present in the [tmp](./tmp) directory.
+- [Rate-limited Kafka connector](https://github.com/guillaumerosinosky/flink-connector-kafka-ratelimit): this module permits Streambed to control the current reading rate. This connector is used in the job as a source. Our scripts expect the build `flink-sql-connector-kafka-ratelimit_2.12-1.14.2.jar` to be present in the [tmp](./tmp) directory.
+- Facultative: [Nexmark benchmark](https://github.com/guillaumerosinosky/nexmark): [Nexmark](https://github.com/nexmark/nexmark) fork linked on Apache Flink 1.14.2. Our scripts expect the build `nexmark-flink-0.2-SNAPSHOT.jar` to be present in the [tmp](./tmp) directory.
 
 We provide infrastructure deployment scripts in the [infra](./infra) directory for deployment on [Kind](https://kind.sigs.k8s.io/) and on the large-scale testbed [Grid5000](https://www.grid5000.fr/w/Grid5000:Home). Those permit the provisioning of the infrastructure, the installation of all the dependencies described above, and   Nexmark Zeppelin notebooks.
 
@@ -126,7 +135,14 @@ Please see [here](./streambed) for a detailed description of the StreamBed sourc
 
 ## Reproducing the ICDE23 results
 
+ICDE23 experiments have been launched on the large-scale testbed [Grid5000](https://www.grid5000.fr/w/Grid5000:Home).
+Note that a [guest account](https://www.grid5000.fr/w/Grid5000:Get_an_account) to the Grid5000 platform, allowing access to computational resources, can be arranged in order to reproduce our experiments. Please get in touch with us in this case.
+
 Please see [here](./experiments/ICDE.md) for a detailed description of the scripts used for the ICDE23 experiments.
+
+## Funding
+
+This project has been funded by the Walloon region (Belgium) through the Win2Wal project GEPICIAD.
 
 ## License
 

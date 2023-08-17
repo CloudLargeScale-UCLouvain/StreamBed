@@ -40,7 +40,7 @@ kafka_node_selector: kafka # node selector for Kafka
 # eval
 events_num: 12000000000 # maximum total number of injected events
 source_parallelism: 32 # number of sources
-limit_backpressure_source: 250 # limit of backpressure at the source to consider the job failed (randomly happens every 5 runs in average)
+limit_backpressure_source: 250 # limit of backpressure at the source to consider the job failed
 
 memory_granularity: 8192 # granularity considered
 memory_range: # considered memory (only min/max used)
@@ -225,3 +225,8 @@ ratio: 1
 ## Results
 
 The results are computed using the [final-r6-plots](./final-r6-plots.ipynb) notebook.
+
+## Funding
+
+This work has been financed by the Walloon Region through
+the Win2Wal project GEPICIAD.
