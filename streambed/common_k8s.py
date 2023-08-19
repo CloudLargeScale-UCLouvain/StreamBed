@@ -116,12 +116,12 @@ def uninstall_chart(name, timeout="120s"):
     result = run_command("helm delete {}".format(name), log = shell_log, shell=False)
     return result
 
-def get_label_nodes(ip_address=False):
+def get_label_nodes():
 
         # Configs can be set in Configuration class directly or using helper utility
     config.load_kube_config()
     api_instance = kubernetes_client.CoreV1Api()
-
+    ip_address = common.ip_mode
     # Listing the cluster nodes
     node_list = api_instance.list_node()
     label_master = "node-role.kubernetes.io/controlplane"
@@ -428,6 +428,41 @@ def init_remote():
     global k8s_configuration    
     k8s_configuration = kubernetes_client.Configuration.get_default_copy()
 
+def init_kind():
+    path_helm = "$HOME/tools/"
+    global env
+    env["PATH"] = os.environ.get("PATH") + ":" + os.environ.get("HOME") + "/tools"
+    env["KUBECONFIG"] = os.environ.get("HOME") + "/.kube/config"
+    # specific Grid5k : add $HOME/tools to PATH as PATH is not set in central Jupyter
+    #new_path = os.environ.get("PATH") + ":" + os.environ.get("HOME") + "/tools"
+    #kubeconfig = os.environ.get("HOME") + "/.kube/config"
+    #env = dict(PATH=new_path, KUBECONFIG=kubeconfig)
+
+    shell_log = True
+
+
+    (manager_node, jobmanager_node, taskmanager_node) = get_label_nodes()
+
+    common.ip_mode = True      
+    common.dynamic_flink_url = False
+
+    common.flink_base_url = "http://flink.127-0-0-1.sslip.io"
+    common.zeppelin_base_url = "http://zeppelin.127-0-0-1.sslip.io"
+    common.prometheus_base_url = "http://admin:prom-operator@prometheus.127-0-0-1.sslip.io"
+    common.kafka_bridge_base_url = "http://kafka.127-0-0-1.sslip.io"
+    common.datagen_flink_base_url = "http://datagen-flink.127-0-0-1.sslip.io"
+    #common.prometheus_base_url = "http://admin:prom-operator@{}:{}".format(manager_node, 30090)
+    #common.zeppelin_base_url = "http://{}:{}".format(manager_node, 30088)
+    #common.flink_base_url = "http://{}:{}".format(manager_node, 31600)
+    #common.prometheus_base_url = "http://admin:prom-operator@{}:{}".format(manager_node, 30090)
+    #common.kafka_bridge_base_url = "http://{}:{}".format(manager_node, 31080)
+    common.prom = prom_connect(common.prometheus_base_url)
+
+    # init kube
+    config.load_kube_config()
+    global k8s_configuration
+    k8s_configuration = kubernetes_client.Configuration.get_default_copy()
+  
 def init_g5k():
     path_helm = "$HOME/tools/"
     global env
@@ -442,7 +477,8 @@ def init_g5k():
 
 
     (manager_node, jobmanager_node, taskmanager_node) = get_label_nodes()
-      
+    
+    common.ip_mode = False
     common.dynamic_flink_url = True
     common.zeppelin_base_url = "http://{}:{}".format(manager_node, 30088)
     common.flink_base_url = "http://{}:{}".format(manager_node, 31600)

@@ -226,7 +226,16 @@ ratio: 1
 
 The results are computed using the [final-r6-plots](./final-r6-plots.ipynb) notebook.
 
-## Funding
+## Test with Kind
 
-This work has been financed by the Walloon Region through
-the Win2Wal project GEPICIAD.
+To launch the CO/CE estimation with Kind, please launch:
+
+1. Execute the [Kind infrastructure notebook](../infra/kind/init-cluster.ipynb).
+
+2. Execute the following command:
+
+```bash
+papermill estim_g5k_papermill.ipynb test_estim.ipynb -f ./scenarios/kind-estim.yml
+```
+
+You will need at least 16 GB of free memory.

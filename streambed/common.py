@@ -4,6 +4,7 @@ import json
 import coloredlogs
 import pandas as pd
 
+ip_mode = False
 dynamic_flink_url = False
 prom = None
 flink_base_url = "http://flink.127-0-0-1.sslip.io:30080"
