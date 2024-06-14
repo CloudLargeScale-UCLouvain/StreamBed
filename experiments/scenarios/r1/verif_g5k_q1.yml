@@ -1,0 +1,21 @@
+results_estimation: "variable-results/r1/q1-final-20230421220421"
+xp_name: "q1"
+g5k: True
+
+job_managers_qty: 2
+kafka_qty: 0
+kafka_partitions: 32
+kafka_replicas: 8
+kafka_node_selector: kafka
+reset_kafka_data: False
+
+task_managers_qty: 8
+source_parallelism: 64
+
+datagen_configuration: null
+
+notebook: "/xp_intro_q1_datagen"
+warmup: 120
+timeout: 600
+sensitivity: 0.01
+ratio: 1

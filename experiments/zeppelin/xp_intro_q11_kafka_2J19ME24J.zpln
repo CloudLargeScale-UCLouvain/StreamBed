@@ -1,0 +1,335 @@
+﻿{
+  "paragraphs": [
+    {
+      "title": "Flink packages configurations",
+      "text": "%flink.conf\n\n# nexmark should have be copied in tmp before with this kind of command: kubectl -n manager cp nexmark-flink-0.2-SNAPSHOT.jar zeppelin-server-5b8df764b5-nr52c:/tmp\n\nflink.execution.mode remote\nflink.execution.remote.host nexmark-flink-jobmanager.default\nflink.execution.remote.port 8081\n\n#table.exec.mini-batch.enabled: true\n#table.exec.mini-batch.allow-latency: 2s\n#table.exec.mini-batch.size: 50000\ntable.optimizer.distinct-agg.split.enabled: true\ntable.optimizer.simplify-operator-name-enabled: false\n\n# You need to run this paragraph first before running any flink code.\nflink.execution.packages org.apache.flink:flink-avro:1.14.2\nflink.execution.jars /tmp/flink-sql-connector-kafka_2.12-1.14.2.jar\n#flink.execution.packages org.apache.flink:flink-connector-kafka_2.12:1.14.2,org.apache.flink:flink-sql-connector-kafka_2.12:1.14.2,org.apache.flink:flink-json:1.14.2",
+      "user": "anonymous",
+      "dateUpdated": "2023-05-10T22:35:58+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1683712618581_26345557",
+      "id": "paragraph_1659835829032_1650567033",
+      "dateCreated": "2023-05-10T09:56:58+0000",
+      "dateStarted": "2023-05-10T22:35:58+0000",
+      "dateFinished": "2023-05-10T22:35:58+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:4095"
+    },
+    {
+      "title": "Kafka table creation",
+      "text": "%flink.ssql(parallelism=1)\nDROP TABLE IF EXISTS kafka;\nCREATE TABLE kafka (\n    event_type int,\n    person ROW<\n        id  BIGINT,\n        name  VARCHAR,\n        emailAddress  VARCHAR,\n        creditCard  VARCHAR,\n        city  VARCHAR,\n        state  VARCHAR,\n        dateTime TIMESTAMP(3),\n        extra  VARCHAR>,\n    auction ROW<\n        id  BIGINT,\n        itemName  VARCHAR,\n        description  VARCHAR,\n        initialBid  BIGINT,\n        reserve  BIGINT,\n        dateTime  TIMESTAMP(3),\n        expires  TIMESTAMP(3),\n        seller  BIGINT,\n        category  BIGINT,\n        extra  VARCHAR>,\n    bid ROW<\n        auction  BIGINT,\n        bidder  BIGINT,\n        price  BIGINT,\n        channel  VARCHAR,\n        url  VARCHAR,\n        dateTime  TIMESTAMP(3),\n        extra  VARCHAR>,\n    dateTime AS\n        CASE\n            WHEN event_type = 0 THEN person.dateTime\n            WHEN event_type = 1 THEN auction.dateTime\n            ELSE bid.dateTime\n        END,\n    WATERMARK FOR dateTime AS dateTime - INTERVAL '4' SECOND\n) WITH (\n    'connector' = 'kafka',\n    'topic' = '${TOPIC}',\n    'properties.bootstrap.servers' = '${BOOTSTRAP_SERVERS}',\n    'properties.group.id' = 'nexmark',\n    'scan.startup.mode' = 'earliest-offset',\n    'sink.partitioner' = 'fixed',\n    'format' = 'avro'\n);\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-05-10T22:35:58+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "NEXMARK_TABLE": "kafka",
+          "TOPIC": "nexmark-datagen",
+          "BOOTSTRAP_SERVERS": "my-cluster-kafka-bootstrap.kafka:9092"
+        },
+        "forms": {
+          "TOPIC": {
+            "type": "TextBox",
+            "name": "TOPIC",
+            "displayName": "TOPIC",
+            "hidden": false,
+            "$$hashKey": "object:5580"
+          },
+          "BOOTSTRAP_SERVERS": {
+            "type": "TextBox",
+            "name": "BOOTSTRAP_SERVERS",
+            "displayName": "BOOTSTRAP_SERVERS",
+            "hidden": false,
+            "$$hashKey": "object:5581"
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Table has been dropped.\nTable has been created.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1683712618581_836356205",
+      "id": "paragraph_1666651615298_1230438717",
+      "dateCreated": "2023-05-10T09:56:58+0000",
+      "dateStarted": "2023-05-10T22:35:58+0000",
+      "dateFinished": "2023-05-10T22:35:59+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:4096"
+    },
+    {
+      "title": "Datagen tables creation",
+      "text": "%flink.ssql(parallelism=1)\nDROP TABLE IF EXISTS datagen;\nCREATE TABLE datagen (\n    event_type int,\n    person ROW<\n        id  BIGINT,\n        name  VARCHAR,\n        emailAddress  VARCHAR,\n        creditCard  VARCHAR,\n        city  VARCHAR,\n        state  VARCHAR,\n        dateTime TIMESTAMP(3),\n        extra  VARCHAR>,\n    auction ROW<\n        id  BIGINT,\n        itemName  VARCHAR,\n        description  VARCHAR,\n        initialBid  BIGINT,\n        reserve  BIGINT,\n        dateTime  TIMESTAMP(3),\n        expires  TIMESTAMP(3),\n        seller  BIGINT,\n        category  BIGINT,\n        extra  VARCHAR>,\n    bid ROW<\n        auction  BIGINT,\n        bidder  BIGINT,\n        price  BIGINT,\n        channel  VARCHAR,\n        url  VARCHAR,\n        dateTime  TIMESTAMP(3),\n        extra  VARCHAR>,\n    dateTime AS\n        CASE\n            WHEN event_type = 0 THEN person.dateTime\n            WHEN event_type = 1 THEN auction.dateTime\n            ELSE bid.dateTime\n        END,\n    WATERMARK FOR dateTime AS dateTime - INTERVAL '4' SECOND\n) WITH (\n    'connector' = 'nexmark',\n    'first-event.rate' = '${TPS}', -- 10000000\n    'next-event.rate' = '${TPS}', -- 10000000\n    'events.num' = '${EVENTS_NUM}', --100000000\n    'person.proportion' = '${PERSON_PROPORTION}', --1\n    'auction.proportion' = '${AUCTION_PROPORTION}', -- 3\n    'bid.proportion' = '${BID_PROPORTION}' -- 46\n);\n\n-- views\nDROP VIEW IF EXISTS person;\nCREATE VIEW person AS\nSELECT\n    person.id,\n    person.name,\n    person.emailAddress,\n    person.creditCard,\n    person.city,\n    person.state,\n    dateTime,\n    person.extra\nFROM ${NEXMARK_TABLE} WHERE event_type = 0;\n\nDROP VIEW IF EXISTS auction;\nCREATE VIEW auction AS\nSELECT\n    auction.id,\n    auction.itemName,\n    auction.description,\n    auction.initialBid,\n    auction.reserve,\n    dateTime,\n    auction.expires,\n    auction.seller,\n    auction.category,\n    auction.extra\nFROM ${NEXMARK_TABLE} WHERE event_type = 1;\nDROP VIEW IF EXISTS bid;\nCREATE VIEW bid AS\nSELECT\n    bid.auction,\n    bid.bidder,\n    bid.price,\n    bid.channel,\n    bid.url,\n    dateTime,\n    bid.extra\nFROM ${NEXMARK_TABLE} WHERE event_type = 2;\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-05-10T22:35:59+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "NEXMARK_TABLE": "kafka",
+          "TOPIC": "nexmark-datagen",
+          "BOOTSTRAP_SERVERS": "my-cluster-kafka-bootstrap.kafka:9092"
+        },
+        "forms": {
+          "TPS": {
+            "type": "TextBox",
+            "name": "TPS",
+            "displayName": "TPS",
+            "hidden": false,
+            "$$hashKey": "object:5842"
+          },
+          "EVENTS_NUM": {
+            "type": "TextBox",
+            "name": "EVENTS_NUM",
+            "displayName": "EVENTS_NUM",
+            "hidden": false,
+            "$$hashKey": "object:5843"
+          },
+          "PERSON_PROPORTION": {
+            "type": "TextBox",
+            "name": "PERSON_PROPORTION",
+            "displayName": "PERSON_PROPORTION",
+            "hidden": false,
+            "$$hashKey": "object:5844"
+          },
+          "AUCTION_PROPORTION": {
+            "type": "TextBox",
+            "name": "AUCTION_PROPORTION",
+            "displayName": "AUCTION_PROPORTION",
+            "hidden": false,
+            "$$hashKey": "object:5845"
+          },
+          "BID_PROPORTION": {
+            "type": "TextBox",
+            "name": "BID_PROPORTION",
+            "displayName": "BID_PROPORTION",
+            "hidden": false,
+            "$$hashKey": "object:5846"
+          },
+          "NEXMARK_TABLE": {
+            "type": "TextBox",
+            "name": "NEXMARK_TABLE",
+            "displayName": "NEXMARK_TABLE",
+            "hidden": false,
+            "$$hashKey": "object:5847"
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Table has been dropped.\nTable has been created.\nView has been dropped.\nView has been created.\nView has been dropped.\nView has been created.\nView has been dropped.\nView has been created.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1683712618581_328395425",
+      "id": "paragraph_1659835912538_1597650629",
+      "dateCreated": "2023-05-10T09:56:58+0000",
+      "dateStarted": "2023-05-10T22:35:59+0000",
+      "dateFinished": "2023-05-10T22:35:59+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:4097"
+    },
+    {
+      "title": "Preparation query5",
+      "text": "%flink.ssql\n-- sink table (request specific)\nDROP TABLE IF EXISTS discard_sink;\nCREATE TABLE discard_sink (\n  bidder BIGINT,\n  bid_count BIGINT,\n  starttime TIMESTAMP(3),\n  endtime TIMESTAMP(3)\n) WITH (\n  'connector' = 'blackhole'\n);\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-05-10T22:35:59+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Table has been dropped.\nTable has been created.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1683712618581_919967039",
+      "id": "paragraph_1661528712615_153395988",
+      "dateCreated": "2023-05-10T09:56:58+0000",
+      "dateStarted": "2023-05-10T22:35:59+0000",
+      "dateFinished": "2023-05-10T22:35:59+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:4098"
+    },
+    {
+      "title": "Query",
+      "text": "%flink\n\nvar sql = \"\"\"\nINSERT INTO discard_sink\nSELECT\n    B.bidder,\n    count(*) as bid_count,\n    SESSION_START(B.dateTime, INTERVAL '10' SECOND) as starttime,\n    SESSION_END(B.dateTime, INTERVAL '10' SECOND) as endtime\nFROM bid B\nGROUP BY B.bidder, SESSION(B.dateTime, INTERVAL '10' SECOND)\n\"\"\"\n\n\nimport java.util.ArrayList;\nimport org.apache.flink.table.operations.ModifyOperation;\nimport scala.collection.JavaConversions._\nval operations = stenv.getParser().parse(sql)\n//val operations = stenv.getParser().parse(\"INSERT INTO discard_sink SELECT auction, bidder, price, dateTime, extra FROM bid\");\nval operation = operations.get(0)\nvar modifyOperations = new ArrayList[ModifyOperation](1)\nmodifyOperations.add(operation.asInstanceOf[ModifyOperation])\nval transformations = stenv.getPlanner().translate(modifyOperations)\nval streamGraph = senv.getWrappedStreamExecutionEnvironment.generateStreamGraph(transformations)\nprint(\"${TASK_PARALLELISM}\" + \"\\n\")\nprint(\"len \" + \"${TASK_PARALLELISM}\".length + \"\\n\")\n//var map = Map[String, Int]()\nprint(\"len2 \" + \"${TASK_PARALLELISM}\".length + \"\\n\")\nval m = for (line <- \"${TASK_PARALLELISM}\".split('|')) yield {\n    print(line + \"\\n\")\n    val splits: Array[String] = line.split(\";\")\n    if (splits.length > 1) {\n        Option(splits(0) -> splits(1).toInt)\n    } else {\n        None\n    }\n}\nprint(m.length)\nval map = m.flatten.toMap    \nprint(streamGraph)\n//streamGraph.setChaining(true) // activate chaining\nfor(streamNode <- streamGraph.getStreamNodes()) {\n    print(streamNode.getOperatorName() +\"\\n\")\n    streamNode.setSlotSharingGroup(streamNode.getOperatorName())\n    if (streamNode.getOperatorName().contains(\"Source\")) {\n        streamNode.setParallelism(${SOURCES})\n    } else {\n        streamNode.setParallelism(${PARALLELISM})\n    }\n    if (map.contains(streamNode.getOperatorName())) {\n        streamNode.setParallelism(map(streamNode.getOperatorName()))\n        print(streamNode.getOperatorName() + \"-\" + map.get(streamNode.getOperatorName()) +\"\\n\")\n    }\n}\nprint (\"Job name : ${JOB_NAME}\")\nstreamGraph.setJobName(\"${JOB_NAME}\")\n\nsenv.getWrappedStreamExecutionEnvironment.execute(streamGraph)",
+      "user": "anonymous",
+      "dateUpdated": "2023-05-10T22:35:59+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "SOURCES": "64",
+          "PARALLELISM": "1",
+          "TASK_PARALLELISM": "Calc(select=[bid.bidder AS \\$f0, PROCTIME() AS processingTime], where=[(event_type = 2)]);1|GroupWindowAggregate(groupBy=[\\$f0], window=[SessionGroupWindow('w\\$, processingTime, 10000)], properties=[w\\$start, w\\$end, w\\$proctime], select=[\\$f0, COUNT(*) AS bid_count, start('w\\$) AS w\\$start, end('w\\$) AS w\\$end, proctime('w\\$) AS w\\$proctime]);9|Calc(select=[\\$f0 AS bidder, bid_count, w\\$start AS starttime, w\\$end AS endtime]);1|Sink: Sink(table=[default_catalog.default_database.discard_sink], fields=[bidder, bid_count, starttime, endtime]);1",
+          "JOB_NAME": "verification-results//q11-20230511001133-1000--1"
+        },
+        "forms": {
+          "TASK_PARALLELISM": {
+            "type": "TextBox",
+            "name": "TASK_PARALLELISM",
+            "displayName": "TASK_PARALLELISM",
+            "hidden": false,
+            "$$hashKey": "object:6028"
+          },
+          "SOURCES": {
+            "type": "TextBox",
+            "name": "SOURCES",
+            "displayName": "SOURCES",
+            "hidden": false,
+            "$$hashKey": "object:6029"
+          },
+          "PARALLELISM": {
+            "type": "TextBox",
+            "name": "PARALLELISM",
+            "displayName": "PARALLELISM",
+            "hidden": false,
+            "$$hashKey": "object:6030"
+          },
+          "JOB_NAME": {
+            "type": "TextBox",
+            "name": "JOB_NAME",
+            "displayName": "JOB_NAME",
+            "hidden": false,
+            "$$hashKey": "object:6031"
+          }
+        }
+      },
+      "results": {
+        "msg": [
+          {
+            "data": "",
+            "type": "TEXT"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1683712618581_1229432414",
+      "id": "paragraph_1661521013634_1946755723",
+      "dateCreated": "2023-05-10T09:56:58+0000",
+      "dateStarted": "2023-05-10T22:35:59+0000",
+      "dateFinished": "2023-05-10T22:35:42+0000",
+      "status": "RUNNING",
+      "$$hashKey": "object:4099"
+    }
+  ],
+  "name": "xp_intro_q11_kafka",
+  "id": "2J19ME24J",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.10.1",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {
+    "isRunning": false
+  },
+  "path": "/xp_intro_q11_kafka"
+}

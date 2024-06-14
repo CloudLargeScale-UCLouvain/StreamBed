@@ -1,0 +1,32 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaBridge
+metadata:
+  name: my-bridge
+  namespace: kafka
+spec:
+  replicas: 1
+  bootstrapServers: my-cluster-kafka-bootstrap.kafka:9092
+  http:
+    port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-bridge
+  namespace: kafka  
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    #nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: kafka.127-0-0-1.sslip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-bridge-bridge-service
+            port:
+              number: 8080

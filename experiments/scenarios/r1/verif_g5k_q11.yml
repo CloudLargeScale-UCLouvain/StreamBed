@@ -1,0 +1,30 @@
+results_estimation: "variable-results/r1/q11-final-20230423060007"
+xp_name: "q11"
+g5k: True
+filter_data: "(observed_source_rate > 350000)" # remove bad runs (min should be ~450000)
+
+job_managers_qty: 1
+kafka_qty: 16
+kafka_partitions: 64
+kafka_replicas: 16
+kafka_node_selector: kafka
+reset_kafka_data: False
+
+task_managers_qty: 8
+source_parallelism: 64
+
+datagen_configuration:
+  parallelism: 64
+  cpu: 16
+  memory : 65536
+  task_managers_qty: 8
+  task_slots: 16
+  timeout: 1800
+  notebook: "/xp_datagen"
+  node_selector: "kafka"
+
+notebook: "/xp_intro_q11_kafka"
+warmup: 120
+timeout: 600
+sensitivity: 0.01
+ratio: 1

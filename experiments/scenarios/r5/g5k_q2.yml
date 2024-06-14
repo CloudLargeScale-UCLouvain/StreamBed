@@ -1,0 +1,56 @@
+# search
+xp_name: q2
+results_path: "search-results"
+
+job_managers_qty: 1
+kafka_qty: 16
+kafka_partitions: 64
+kafka_replicas: 16
+kafka_node_selector: kafka
+# eval
+events_num: 12000000000 # estimate injection: 4M/sec in this config
+source_parallelism: 64
+limit_backpressure_source: 250
+
+memory_granularity: 8192
+memory_range: 
+- 8192
+- 16384
+- 32768
+- 65536
+task_slots_minimal: 2
+task_slots_limits: 
+- 70
+
+optimization:
+  nb_iterations: 20
+  base_estimator: gp
+  n_initial_points: 6
+  initial_point_generator: grid
+  acq_func: EI
+  random_state: 42
+
+reset_kafka_data: True
+previous_results: 
+- "variable-results/r1/q2-final-20230422074701"
+
+notebooks: ["/xp_intro_q2_kafka_custom_ratelimit"]
+cpu: 16
+task_slots_per_task_manager: 16
+task_managers_qty: 8
+run: 0
+warmup: 300
+nb_runs_throughput: 1
+nb_runs_parallelism: 1
+g5k: True
+dichotomic_mst_tuning: 
+  initial_rate: 10000000000
+  slide_window: 75
+  size_window: 60
+  observation_size: 30
+  timeout: 600
+  mean_threshold: 0.01
+  higher_bound_ratio: 2
+  cooldown_throughput: 200
+    #"warmup": 120 # usage of higher level parameter
+    #"nb_sources": usage of of higher level parameter

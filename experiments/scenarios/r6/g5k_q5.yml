@@ -1,0 +1,50 @@
+results_estimation: ["search-results/final/q5-20230620132451"]
+xp_name: "final/q5"
+g5k: True
+
+model_type: log
+
+job_managers_qty: 1
+kafka_qty: 10
+kafka_partitions: 40
+kafka_replicas: 10
+kafka_node_selector: kafka
+reset_kafka_data: True
+
+cpu: 16
+task_slots_per_task_manager: 16
+
+task_managers_qty: 16 # ignored
+source_parallelism: 32 # ignored
+source_capacity: 140000 # set sufficient for x1.5
+
+memory_range: 
+#- 8192
+#- 16384 
+- 32768
+- 65536
+
+task_slots_limits: []
+throughputs: 
+- 2500000 # 1009 in 
+
+datagen_configuration:
+  parallelism: 100
+  cpu: 16
+  memory : 65536
+  task_managers_qty: 10
+  task_slots: 16
+  timeout: 600
+  notebook: "/xp_datagen"
+  node_selector: "kafka"
+
+notebook: "/xp_intro_q5_kafka"
+warmup: 300
+sensitivity: 0.01
+ratio: 0.5
+timeout: 5400
+
+throughput_ratios:
+- 1.5
+- 1
+- 1.2

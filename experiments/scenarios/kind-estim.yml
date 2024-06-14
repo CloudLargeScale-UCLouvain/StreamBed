@@ -1,0 +1,37 @@
+xp_name: q5-kind
+results_path: "variable-results"
+
+job_managers_qty: 1
+kafka_qty: 1
+kafka_partitions: 4
+kafka_replicas: 1
+kafka_node_selector: jobmanager
+# eval
+events_num: 120000000 # estimate injection: 4M/sec in this config
+source_parallelism: 4
+
+memory_range: 
+- 2048
+task_slots_limits: 
+- 14
+- 16
+
+reset_kafka_data: True
+
+notebooks: ["/xp_intro_q5_kafka_custom_ratelimit"]
+cpu: 4
+task_slots_per_task_manager: 16
+task_managers_qty: 1
+run: 0
+warmup: 120
+nb_runs_throughput: 3
+nb_runs_parallelism: 1
+kind: True
+limit_backpressure_source: 250
+
+datagen_configuration: 
+    parallelism: 64
+    cpu: 4
+    memory : 4096
+    task_managers_qty: 1
+    task_slots: 16

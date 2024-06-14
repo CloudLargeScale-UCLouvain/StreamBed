@@ -1,0 +1,3133 @@
+- configuration: &id002
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: &id003
+      cooldown_throughput: 200
+      higher_bound_ratio: 2
+      initial_rate: 100000000
+      mean_threshold: 0.01
+      observation_size: 30
+      size_window: 60
+      slide_window: 75
+      timeout: 600
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 3f04e341a5bd5d5e1dd58b154877a1f0
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - &id001 !!python/object/apply:numpy.dtype
+      args:
+      - f8
+      - false
+      - true
+      state: !!python/tuple
+      - 3
+      - <
+      - null
+      - null
+      - null
+      - -1
+      - -1
+      - 0
+    - !!binary |
+      bp9UacD6fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      XF0atJ2ITkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Ae/cgYX0AkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HMdxHEtoUUE=
+  task_parallelism: ''
+- configuration: *id002
+  job_id: 4d8872c0f8e6ab7e52abd32ec2d0727f
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JyNf3f+Dfz8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      CqhKH3FnQEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      D+qgDoR6w0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8vDw8JDVPkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id002
+  job_id: c6a81407234ffa608817def8183f73df
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      w/8pX0ngfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YKe3xCzQTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      eeUnUh67C0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8xrKa0cwU0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id004
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 68
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: a2bd7122d254fc021bc60fcde4fb1f73
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      iejT/iTffj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DbZGaHLGTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RYVULOYHEkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HxrrQ26DVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id004
+  job_id: 84ea11c1d3fff34f3c379016bec5d15e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Nvr4djn1fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      n7DgBzynS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kJRcTR/xE0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      tJfQXrmrU0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id004
+  job_id: 66d381f5faf3780057f2aea213e52f33
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QerB/Nrpfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AZGVhs3CS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      OX71piBcEUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MIv4BOROVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id005
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 69
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: ce9cc041c887569c9948054c132ef45e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Y52mTinyfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5kbTJ9dJS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      xzZ4nJcwEkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9yOn+UIOVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id005
+  job_id: 9b5cd8137f22a4ee216e10ed3fce3f5e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /P6kM1lDfz8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RtFXFG3MOkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vuIrvpp2w0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bnrTmy58NkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id005
+  job_id: f9981f3a162d8e463486ee71fc9a109d
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DgC8cw32fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cxSEjg89S0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      hd80+V9AG0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      mxd/IhlbVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id006
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 8192
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 502c56402f9af9d94738e2a192998f9e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KBhm0QAEfz8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      r9TsvVOuSkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      J7Ai4/LWDkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7rGWoUGDVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id006
+  job_id: 71b732b9b705172826ab30da2ea25139
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      i7+Zxy73fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      386gx3/KSUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UrjJHUPqFUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7lJPxlp7VkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id006
+  job_id: 612bda4b8df7fe8240be34f0f34d00a2
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      mVWxxm3rfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      CZ7vDuKbSEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ms7y1JcfFUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      T+zETsw5T0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id007
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 4fc9e3291527dd4b1dc058b69e342db3
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      QYCGG6rqfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      dulo1LsrTkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      rp2GC6aUEUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cRzHcWSTUUE=
+  task_parallelism: ''
+- configuration: *id007
+  job_id: 0b066d2b4a888f0a95653047303ec4e2
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      oWPho33ifj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      FNB9FsOHTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      NKqUUX6lDEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LsuyLEWEVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id007
+  job_id: bd9f5601c39c8028a7823b52eb980fa1
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      hdHW2uPsfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      pL314v6CTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      l/98UTV2FkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      q6qqqnaGVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id008
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 68
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 6e917523dbcf9a7fce2280aa923ee282
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9j9X3Vcmfz8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qRfzqdOWPEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1UEd1Llww0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kIUsZDFgNkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id008
+  job_id: 5678e9a83283ed9eb275e1f243353259
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      taSINu3gfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      XNrXJEecTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      CFWGqFT7FEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      EtpL6PMtVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id008
+  job_id: 3e17322b255f1d9e9a400cacfa2305c7
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      aZH0hgH3fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      o46BkDrvTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      FKm0m5cLFkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      WVPWlHUlWkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id009
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 69
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 167571796cd4c7ad13bbc41ba1a0d2f5
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uytkBK7tfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      YuAYEmX0S0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      BuZR4lfkFUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      m9R9eacqWEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id009
+  job_id: 5957c8bb1311227d0aa6056935a3143d
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      36eB9ir5fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      eAtYm2tKTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      WocEHo1cEkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      13Vd15BEVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id009
+  job_id: ea122fd50e64511d0079ec0b9975e0b9
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kykNr5jwfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9OvOobrjS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      pMTN89OVC0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bbEyfI3xWEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id010
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 16384
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 221fec32cca350d05f48d08830066e17
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      B/prcbHpfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ULKGQSElTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Ol7YzmMhGEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      3LZt21rYVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id010
+  job_id: d59585544eadefba96db4d8b1f0206ab
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Ubdp6gH7fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      s7A9JtblSkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      j/28Vz8BGUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gNpCA7LmVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id010
+  job_id: 862eca5ddecdb5d5eeb89475f4f724ce
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      0w5NeO/vfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RYOiIejwS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      gvfD8E/qGEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      kiRJkv5WVEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id011
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 98dffbb3016275d19899e2a246800701
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cQNLMIUyfz8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /GzqHsAcUEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RwV35ctrDUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Tm9600VQUkE=
+  task_parallelism: ''
+- configuration: *id011
+  job_id: 2c21663017ea70e6e6ebee8e9c2f237e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      LoKp4TDifj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uWWuSu07TEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      GxCaWGgRHUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      J3ZiJwDbVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id011
+  job_id: 34ceb9962dd35907b8aa948fbd6882ac
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      yGwAcKv/fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      bH1X4Q4STEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /UFpK0eHGUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      iREjRhg9VEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id012
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 68
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 4486e248dbfbf0e953a846c5b9ad3ec7
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      S6SGnMD2fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HNzN6nYnT0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KNk4zJ8kFEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qQnGW4S8VkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id012
+  job_id: 899dc4a5fda4d748429501fd4f158279
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      JC3Heevwfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jMjRrlbwTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      2wvU1kH9FUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      E+idutaSVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id012
+  job_id: f00f43c31cd4374b4ce8708c08de9f87
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      pzd7XlLufj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      85cT5LGXTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uj2Fz2vNDkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ZSELWWJYUkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id013
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 69
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: e771d96de7cd46a6b2ce397eb31d4594
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      HUUPrq3afj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Qt7PoncUTkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      L7T9tBCYG0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Yk/YEwJ8WEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id013
+  job_id: 620644b577b39b35a57df0c0b9394366
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      OIIfRMDsfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KNX4/8AuTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Owi95ffYGEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      psLE+50JWUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id013
+  job_id: 722443bd065b544de83bd95287575c33
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cFWU+Orxfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      swVh4jQvTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      DgKCUMoKF0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAaOhMV0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id014
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 32768
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: e8243f498cf2dcf6a064c5d60661b396
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8xsXbbL0fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      2HdNjbzWTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      7/7LpMofG0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ////n9ktV0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id014
+  job_id: 3e75b191c4461ea2972d24a6102e9b19
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      s67x+Ansfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MzlUFr6RS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1SOiyKQ9FkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5M+rLGLOVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id014
+  job_id: 223bc189922db8e51b1907cf80248f7b
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      EwdlQBHkfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Tz/9FIyQS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      ns1HSaaVEUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      5p5GWOhSVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id015
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 67
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: cecbe87a5fd2ec02b3286e3e650b414b
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vLk+vyvrfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AFam5TuUTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      wSzxY2oDEEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      jC66aB88UUE=
+  task_parallelism: ''
+- configuration: *id015
+  job_id: d0a5a096324c5cb6e5cd48b5f967832c
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      U+cuLQzvfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UVYhGRjwTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1EzJ2wTZDEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AQAA0FQtV0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id015
+  job_id: c380538429bf7a2e1d746b03d48cd8c7
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 2
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      /YzmFOr9fj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uIuzG8NKTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      T4B+a8bZC0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      uG3btjxPVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);2|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id016
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 68
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: f5698251d55accc10759df0f0118e650
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +QYn03oBfz8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      BWmQBhGbPUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      OqiDOpx2w0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      //////eMNEE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id016
+  job_id: 462d8c127b6724272431eb2e7072bbd1
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      MehdpPnyfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      RxhxkBYxTkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      z16wuzkpGkE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      t7LPIVpoVkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id016
+  job_id: 80b9e7ee197d5d074f72174140a9c231
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 3
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      hf5uhNbsfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      732ky7CmTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +AlsBBYsGEE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Y97OkIpaV0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);3|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id017
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 69
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: 27d04e217f7dd9f6059969bef9c94daa
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      j6Sky/A4fz8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8ZSPI/ZpOUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      1UEd1ANyw0A=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      yEIWsgCINkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id017
+  job_id: a264b9629d01ff6893dc487e341be340
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      h2KmofDufj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      cY5IsKUVTEE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VzKLW30TFUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      KXg5BRUGXUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id017
+  job_id: aff5b453897415f871f8e0aa8658f1d0
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 4
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      A9/NsBDyfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      Q/S9a7ubTUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      9zfWvuUICUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAP/PV0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);4|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: &id018
+    cpu: 16
+    custom_memory: null
+    dichotomic_mst_tuning: *id003
+    evenly_spread: 'true'
+    memory: 65536
+    nb_runs_parallelism: 1
+    nb_runs_throughput: 3
+    notebook: /xp_intro_q2_kafka_custom_ratelimit
+    parallelism: 1
+    run: 0
+    source_parallelism: 64
+    task_managers_qty: 8
+    task_slots_limit: 70
+    task_slots_per_task_manager: 16
+    throughputs:
+    - 100000000
+    timeout: 600
+    warmup: 120
+  job_id: a2e59a71b39024a2a8e13f6a661d8b90
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AFMWQLPnfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      k+nbeHKBS0E=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      VpRhhuwmF0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      8aQg+Q8RV0E=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id018
+  job_id: e188f0a66dc675bd35854fbd149f374e
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      UMzf8avtfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      vS2DBtW+SUE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      +SLw7cYCFUE=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      eJ7neZrNVUE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'
+- configuration: *id018
+  job_id: 968cbfeef30e0757daf1f2c0005c7257
+  job_operators:
+  - description: 'Source: KafkaSource-default_catalog.default_database.kafka'
+    id: bc764cd8ddf7a0cff126f51c16239658
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 64
+  - description: Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+      = 2) AND (MOD(bid.auction, 123) = 0))])
+    id: 0a448493b4782967b150582570326227
+    inputs:
+    - exchange: pipelined_bounded
+      id: bc764cd8ddf7a0cff126f51c16239658
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 5
+  - description: 'Sink: Sink(table=[default_catalog.default_database.discard_sink],
+      fields=[auction, price])'
+    id: ea632d67b7d595e5b851708ae9ad79d6
+    inputs:
+    - exchange: pipelined_bounded
+      id: 0a448493b4782967b150582570326227
+      num: 0
+      ship_strategy: FORWARD
+    operator: ''
+    operator_strategy: ''
+    optimizer_properties: {}
+    parallelism: 1
+  map_cumulated_ratio:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      omFvVhnpfj8=
+    bc764cd8ddf7a0cff126f51c16239658: 1.0
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      AAAAAAAAAAA=
+  map_true_processing_rate:
+    0a448493b4782967b150582570326227: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      qaQQ4XKgSkE=
+    bc764cd8ddf7a0cff126f51c16239658: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      nKk39A0DF0E=
+    ea632d67b7d595e5b851708ae9ad79d6: !!python/object/apply:numpy.core.multiarray.scalar
+    - *id001
+    - !!binary |
+      OL3pTQReUkE=
+  task_parallelism: 'Calc(select=[bid.auction AS auction, bid.price AS price], where=[((event_type
+    = 2) AND (MOD(bid.auction, 123) = 0))]);5|Sink: Sink(table=[default_catalog.default_database.discard_sink],
+    fields=[auction, price]);1'

@@ -1,0 +1,16 @@
+prometheus:
+  service:
+    type: NodePort
+    nodePort: 30090
+  prometheusSpec:
+    nodeSelector:
+      tier: manager
+grafana:
+  service:
+    type: NodePort
+    nodePort: 30300
+  nodeSelector:
+    tier: manager
+kube-state-metrics:
+  nodeSelector:
+    tier: manager

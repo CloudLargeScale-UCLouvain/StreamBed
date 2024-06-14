@@ -1,0 +1,12 @@
+mode: standalone
+image:
+  debug: true
+accessKey: root
+secretKey: rootroot
+persistence:
+  existingClaim: pvc-manager-minio
+service:
+  type: NodePort
+  nodePort: 30900
+nodeSelector:
+  tier: manager

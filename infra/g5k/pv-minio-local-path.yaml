@@ -1,0 +1,13 @@
+# Define Kubernetes PVC
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-manager-minio
+  namespace: manager
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: local-path    

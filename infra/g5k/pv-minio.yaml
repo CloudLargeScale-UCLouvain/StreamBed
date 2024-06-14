@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-manager-minio
+spec:
+  capacity:
+    storage: 8Gi
+  # volumeMode field requires BlockVolume Alpha feature gate to be enabled.
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: storage-minio
+  local:
+    #path: "/srv/osirim/grosinosky/data" # seems disabled, see how to enable https://www.grid5000.fr/w/Storage#OSIRIM
+    path: /home/grosinosky/xp/gepiciad/resource-estimator/data
+
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: tier
+          operator: In
+          values:
+          - manager
+---
+# Define Kubernetes PVC
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-manager-minio
+  namespace: manager
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: storage-minio    

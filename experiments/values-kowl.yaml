@@ -1,0 +1,33 @@
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+kowl:
+  # See reference config: https://github.com/cloudhut/kowl/blob/master/docs/config/kowl.yaml)
+  config:
+    kafka:
+      brokers:
+        - my-cluster-kafka-brokers:9092
+nodeSelector:
+  tier: manager
+service:
+  type: NodePort
+ingress:
+  enabled: true
+  className: ""
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: kowl.127-0-0-1.sslip.io
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kowl
+            port:
+              number: 8081

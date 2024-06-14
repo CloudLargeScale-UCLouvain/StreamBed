@@ -1,0 +1,49 @@
+results_estimation: ["search-results/final/q8-20230628131449"]
+
+xp_name: "final/q8"
+g5k: True
+
+model_type: sqrt
+
+job_managers_qty: 1
+kafka_qty: 28
+kafka_partitions: 112
+kafka_replicas: 28
+kafka_node_selector: kafka
+reset_kafka_data: False
+
+cpu: 16
+task_slots_per_task_manager: 16
+
+task_managers_qty: 16 # ignored
+source_parallelism: 32 # ignored
+source_capacity: 140000 # set sufficient for x1.5
+
+memory_range: 
+#- 8192
+#- 16384 
+- 32768
+- 65536
+
+task_slots_limits: []
+throughputs: 
+- 15000000
+
+datagen_configuration:
+  parallelism: 280
+  cpu: 16
+  memory : 65536
+  task_managers_qty: 28
+  task_slots: 16
+  timeout: 600
+  notebook: "/xp_datagen"
+  node_selector: "kafka"
+
+notebook: "/xp_intro_q8_kafka"
+warmup: 300
+sensitivity: 0.01
+ratio: 0.5
+timeout: 7200
+throughput_ratios:
+- 1.5
+- 1

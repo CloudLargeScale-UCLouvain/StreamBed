@@ -1,0 +1,229 @@
+{
+    "option":
+    {
+      "remote": true,
+      "port": -1,
+      "isExistingProcess": false,
+      "setPermission": false,
+      "owners": [],
+      "isUserImpersonate": false,
+      "perNote": "isolated",
+      "perUser": "",
+      "session": false,
+      "process": true
+    },
+    "properties":
+    {
+      "FLINK_HOME":
+      {
+        "name": "FLINK_HOME",
+        "value": "",
+        "type": "string",
+        "description": "Location of flink distribution"
+      },
+      "HADOOP_CONF_DIR":
+      {
+        "name": "HADOOP_CONF_DIR",
+        "value": "",
+        "type": "string",
+        "description": "Location of hadoop conf (core-site.xml, hdfs-site.xml and etc.)"
+      },
+      "HIVE_CONF_DIR":
+      {
+        "name": "HIVE_CONF_DIR",
+        "value": "",
+        "type": "string",
+        "description": "Location of hive conf (hive-site.xml)"
+      },
+      "flink.execution.mode":
+      {
+        "name": "flink.execution.mode",
+        "value": "local",
+        "type": "string",
+        "description": "Execution mode, it could be local|remote|yarn"
+      },
+      "flink.execution.remote.host":
+      {
+        "name": "flink.execution.remote.host",
+        "value": "",
+        "type": "string",
+        "description": "Host name of running JobManager. Only used for remote mode"
+      },
+      "flink.execution.remote.port":
+      {
+        "name": "flink.execution.remote.port",
+        "value": "",
+        "type": "number",
+        "description": "Port of running JobManager. Only used for remote mode"
+      },
+      "jobmanager.memory.process.size":
+      {
+        "name": "jobmanager.memory.process.size",
+        "value": "1024m",
+        "type": "text",
+        "description": "Memory for JobManager, e.g. 1024m"
+      },
+      "taskmanager.memory.process.size":
+      {
+        "name": "taskmanager.memory.process.size",
+        "value": "1024m",
+        "type": "text",
+        "description": "Memory for TaskManager, e.g. 1024m"
+      },
+      "taskmanager.numberOfTaskSlots":
+      {
+        "name": "taskmanager.numberOfTaskSlots",
+        "value": "1",
+        "type": "number",
+        "description": "Number of slot per TaskManager"
+      },
+      "local.number-taskmanager":
+      {
+        "name": "local.number-taskmanager",
+        "value": "4",
+        "type": "number",
+        "description": "Number of TaskManager in local mode"
+      },
+      "yarn.application.name":
+      {
+        "name": "yarn.application.name",
+        "value": "Zeppelin Flink Session",
+        "type": "string",
+        "description": "Yarn app name"
+      },
+      "yarn.application.queue":
+      {
+        "name": "yarn.application.queue",
+        "value": "default",
+        "type": "string",
+        "description": "Yarn queue name"
+      },
+      "zeppelin.flink.uiWebUrl":
+      {
+        "name": "zeppelin.flink.uiWebUrl",
+        "value": "",
+        "type": "string",
+        "description": "User specified Flink JobManager url, it could be used in remote mode where Flink cluster is already started, or could be used as url template, e.g. https://knox-server:8443/gateway/cluster-topo/yarn/proxy/{{applicationId}}/ where {{applicationId}} would be replaced with yarn app id"
+      },
+      "zeppelin.flink.run.asLoginUser":
+      {
+        "name": "zeppelin.flink.run.asLoginUser",
+        "value": true,
+        "type": "checkbox",
+        "description": "Whether run flink job as the zeppelin login user, it is only applied when running flink job in hadoop yarn cluster and shiro is enabled"
+      },
+      "flink.udf.jars":
+      {
+        "name": "flink.udf.jars",
+        "value": "",
+        "type": "string",
+        "description": "Flink udf jars (comma separated), Zeppelin will register udfs in this jar for user automatically, these udf jars could be either local files or hdfs files if you have hadoop installed, the udf name is the class name"
+      },
+      "flink.udf.jars.packages":
+      {
+        "name": "flink.udf.jars.packages",
+        "value": "",
+        "type": "string",
+        "description": "Packages (comma separated) that would be searched for the udf defined in `flink.udf.jars`"
+      },
+      "flink.execution.jars":
+      {
+        "name": "flink.execution.jars",
+        "value": "",
+        "type": "string",
+        "description": "Additional user jars (comma separated), these jars could be either local files or hdfs files if you have hadoop installed"
+      },
+      "flink.execution.packages":
+      {
+        "name": "flink.execution.packages",
+        "value": "",
+        "type": "string",
+        "description": "Additional user packages (comma separated), e.g. flink connector packages"
+      },
+      "zeppelin.flink.scala.color":
+      {
+        "name": "zeppelin.flink.scala.color",
+        "value": true,
+        "type": "checkbox",
+        "description": "Whether display scala shell output in colorful format"
+      },
+      "zeppelin.flink.enableHive":
+      {
+        "name": "zeppelin.flink.enableHive",
+        "value": false,
+        "type": "checkbox",
+        "description": "Whether enable hive"
+      },
+      "zeppelin.flink.hive.version":
+      {
+        "name": "zeppelin.flink.hive.version",
+        "value": "2.3.4",
+        "type": "string",
+        "description": "Hive version that you would like to connect"
+      },
+      "zeppelin.flink.module.enableHive":
+      {
+        "name": "zeppelin.flink.module.enableHive",
+        "value": false,
+        "type": "checkbox",
+        "description": "Whether enable hive module, hive udf take precedence over flink udf if hive module is enabled."
+      },
+      "zeppelin.flink.printREPLOutput":
+      {
+        "name": "zeppelin.flink.printREPLOutput",
+        "value": true,
+        "type": "checkbox",
+        "description": "Print REPL output"
+      },
+      "zeppelin.flink.maxResult":
+      {
+        "name": "zeppelin.flink.maxResult",
+        "value": "1000",
+        "type": "number",
+        "description": "Max number of rows returned by sql interpreter."
+      },
+      "zeppelin.pyflink.python":
+      {
+        "name": "zeppelin.pyflink.python",
+        "value": "python",
+        "type": "string",
+        "description": "Python executable for pyflink"
+      },
+      "flink.interpreter.close.shutdown_cluster":
+      {
+        "name": "flink.interpreter.close.shutdown_cluster",
+        "value": true,
+        "type": "checkbox",
+        "description": "Whether shutdown flink cluster when close interpreter"
+      },
+      "zeppelin.interpreter.close.cancel_job":
+      {
+        "name": "zeppelin.interpreter.close.cancel_job",
+        "value": true,
+        "type": "checkbox",
+        "description": "Whether cancel flink job when closing interpreter"
+      },
+      "zeppelin.flink.job.check_interval":
+      {
+        "name": "zeppelin.flink.job.check_interval",
+        "value": "1000",
+        "type": "number",
+        "description": "Check interval (in milliseconds) to check flink job progress"
+      },
+      "zeppelin.flink.concurrentBatchSql.max":
+      {
+        "name": "zeppelin.flink.concurrentBatchSql.max",
+        "value": "10",
+        "type": "number",
+        "description": "Max concurrent sql of Batch Sql"
+      },
+      "zeppelin.flink.concurrentStreamSql.max":
+      {
+        "name": "zeppelin.flink.concurrentStreamSql.max",
+        "value": "10",
+        "type": "number",
+        "description": "Max concurrent sql of Stream Sql"
+      }
+    },
+    "dependencies": []
+  }
